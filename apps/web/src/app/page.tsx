@@ -18,16 +18,10 @@ export default function HomePage() {
         </p>
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <Link
-            href="/register"
+            href="/dashboard"
             className="w-full rounded-xl bg-primary-500 px-8 py-4 text-lg font-bold text-white transition-all hover:bg-primary-600 hover:shadow-lg hover:shadow-primary-500/30 sm:w-auto"
           >
-            Começar Gratuitamente
-          </Link>
-          <Link
-            href="/login"
-            className="w-full rounded-xl border border-gray-700 px-8 py-4 text-lg font-medium text-gray-300 transition-all hover:border-gray-500 hover:text-white sm:w-auto"
-          >
-            Já tenho conta
+            Acessar Plataforma (Grátis)
           </Link>
         </div>
         <div className="mt-16 grid grid-cols-2 gap-6 text-left md:grid-cols-4">

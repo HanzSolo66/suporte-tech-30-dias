@@ -76,6 +76,13 @@ suporte-tech-30-dias/
 └── ai-assistant/           # Prompts e configurações do assistente IA
 ```
 
+## 🌐 Versão Online (GitHub Pages)
+
+Este projeto está configurado para rodar como uma aplicação estática no GitHub Pages. 
+O progresso é salvo localmente no seu navegador (LocalStorage).
+
+**Acesse aqui:** [https://HanzSolo66.github.io/suporte-tech-30-dias/](https://HanzSolo66.github.io/suporte-tech-30-dias/)
+
 ## 📄 Documentação
 
 Para mais detalhes sobre o projeto, consulte a pasta `docs/`:
