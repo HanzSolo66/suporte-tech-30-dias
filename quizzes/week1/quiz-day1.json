@@ -1,0 +1,70 @@
+{
+  "day": 1,
+  "week": 1,
+  "title": "O que é Programação?",
+  "xpPerQuestion": 10,
+  "questions": [
+    {
+      "id": "w1d1-q1",
+      "text": "O que melhor define programação?",
+      "explanation": "Programação é a criação de instruções (código) que um computador executa para realizar tarefas.",
+      "answers": [
+        {
+          "id": "a1",
+          "text": "Consertar computadores fisicamente",
+          "isCorrect": false,
+          "explanation": "Isso é manutenção de hardware, não programação."
+        },
+        {
+          "id": "a2",
+          "text": "Criar instruções para que o computador execute tarefas",
+          "isCorrect": true,
+          "explanation": ""
+        },
+        {
+          "id": "a3",
+          "text": "Usar planilhas do Excel",
+          "isCorrect": false,
+          "explanation": "Usar planilhas é uma habilidade diferente de programar."
+        },
+        {
+          "id": "a4",
+          "text": "Navegar na internet",
+          "isCorrect": false,
+          "explanation": "Navegar na internet é usar software, não criá-lo."
+        }
+      ]
+    },
+    {
+      "id": "w1d1-q2",
+      "text": "Qual dessas situações do suporte técnico mais se parece com programação?",
+      "explanation": "Criar um script para automatizar respostas é programação aplicada ao suporte. Os outros exemplos são tarefas manuais.",
+      "answers": [
+        {
+          "id": "b1",
+          "text": "Ligar para um cliente para resolver um problema",
+          "isCorrect": false,
+          "explanation": "Ligar para clientes é atendimento, não programação."
+        },
+        {
+          "id": "b2",
+          "text": "Criar um script que verifica automaticamente se um serviço está online",
+          "isCorrect": true,
+          "explanation": ""
+        },
+        {
+          "id": "b3",
+          "text": "Enviar um e-mail manualmente",
+          "isCorrect": false,
+          "explanation": "Enviar e-mails manualmente não é programação."
+        },
+        {
+          "id": "b4",
+          "text": "Abrir um ticket no sistema",
+          "isCorrect": false,
+          "explanation": "Abrir tickets é usar software, não programar."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  name          String
+  email         String    @unique
+  passwordHash  String
+  xp            Int       @default(0)
+  level         Int       @default(1)
+  currentStreak Int       @default(0)
+  longestStreak Int       @default(0)
+  lastStudyDate DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  progress    Progress[]
+  attempts    QuizAttempt[]
+  badges      UserBadge[]
+  messages    AIMessage[]
+}
+
+model Course {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  modules     Module[]
+}
+
+model Module {
+  id          String   @id @default(uuid())
+  courseId    String
+  title       String   // Ex: "Semana 1: Fundamentos"
+  order       Int
+  course      Course   @relation(fields: [courseId], references: [id])
+  lessons     Lesson[]
+}
+
+model Lesson {
+  id          String   @id @default(uuid())
+  moduleId    String
+  title       String
+  content     String   @db.Text // Markdown ou HTML
+  videoUrl    String?
+  order       Int
+  module      Module   @relation(fields: [moduleId], references: [id])
+  quiz        Quiz?
+  progress    Progress[]
+}
+
+model Quiz {
+  id          String     @id @default(uuid())
+  lessonId    String     @unique
+  lesson      Lesson     @relation(fields: [lessonId], references: [id])
+  questions   Question[]
+}
+
+model Question {
+  id            String     @id @default(uuid())
+  quizId        String
+  text          String
+  explanation   String     @db.Text // Explicação geral ou da resposta correta
+  quiz          Quiz       @relation(fields: [quizId], references: [id])
+  answers       Answer[]
+  attempts      QuizAttempt[]
+}
+
+model Answer {
+  id          String   @id @default(uuid())
+  questionId  String
+  text        String
+  isCorrect   Boolean  @default(false)
+  explanation String?  @db.Text // Por que esta resposta específica está errada (se for o caso)
+  question    Question @relation(fields: [questionId], references: [id])
+}
+
+model QuizAttempt {
+  id          String   @id @default(uuid())
+  userId      String
+  questionId  String
+  isCorrect   Boolean
+  createdAt   DateTime @default(now())
+  
+  user        User     @relation(fields: [userId], references: [id])
+  question    Question @relation(fields: [questionId], references: [id])
+}
+
+model Progress {
+  id          String   @id @default(uuid())
+  userId      String
+  lessonId    String
+  completed   Boolean  @default(false)
+  completedAt DateTime?
+  
+  user        User     @relation(fields: [userId], references: [id])
+  lesson      Lesson   @relation(fields: [lessonId], references: [id])
+
+  @@unique([userId, lessonId])
+}
+
+model Badge {
+  id          String      @id @default(uuid())
+  name        String
+  description String
+  imageUrl    String?
+  users       UserBadge[]
+}
+
+model UserBadge {
+  id          String   @id @default(uuid())
+  userId      String
+  badgeId     String
+  awardedAt   DateTime @default(now())
+  
+  user        User     @relation(fields: [userId], references: [id])
+  badge       Badge    @relation(fields: [badgeId], references: [id])
+
+  @@unique([userId, badgeId])
+}
+
+model AIMessage {
+  id          String   @id @default(uuid())
+  userId      String
+  role        String   // "user" ou "assistant"
+  content     String   @db.Text
+  contextUrl  String?  // Aula em que o usuário estava quando perguntou
+  createdAt   DateTime @default(now())
+  
+  user        User     @relation(fields: [userId], references: [id])
+}
