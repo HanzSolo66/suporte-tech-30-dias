@@ -1298,6 +1298,546 @@ export const lessons: Lesson[] = [
     closing:
       "Você concluiu a semana de dados e SQL. Agora está pronto para conectar sistemas e pensar em automações.",
   },
+  {
+    slug: "dia-22",
+    dayNumber: 22,
+    title: "O que são APIs?",
+    description:
+      "Hoje você vai entender como sistemas conversam entre si usando APIs.",
+    objective:
+      "Compreender o conceito de API como uma ponte entre sistemas.",
+    summary:
+      "API é uma forma de um sistema conversar com outro. Em suporte, uma API pode conectar um sistema de chamados a uma planilha, CRM, chatbot ou ferramenta de automação.",
+    concepts: [
+      {
+        title: "API",
+        text: "Interface que permite que sistemas troquem informações.",
+      },
+      {
+        title: "Requisição",
+        text: "Pedido feito por um sistema para outro.",
+      },
+      {
+        title: "Resposta",
+        text: "Informação que o sistema retorna depois de receber uma requisição.",
+      },
+    ],
+    quiz: {
+      title: "Qual definição combina melhor com API?",
+      options: [
+        {
+          id: "a",
+          text: "Uma forma de sistemas conversarem entre si",
+          isCorrect: true,
+          explanation:
+            "Correto. API permite que um sistema envie ou receba informações de outro.",
+        },
+        {
+          id: "b",
+          text: "Um tipo de cadeira de escritório",
+          isCorrect: false,
+          explanation:
+            "Não. API é um conceito de integração entre sistemas.",
+        },
+        {
+          id: "c",
+          text: "Uma senha que nunca muda",
+          isCorrect: false,
+          explanation:
+            "Não. APIs podem usar chaves de acesso, mas API não é uma senha.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["api", "integração", "integracao", "sistemas"],
+        response:
+          "Pense em API como um atendente entre dois sistemas. Um sistema pede uma informação e o outro responde em um formato combinado.",
+      },
+    ],
+    closing:
+      "Você aprendeu que APIs permitem integrar ferramentas e criar fluxos mais automatizados.",
+  },
+  {
+    slug: "dia-23",
+    dayNumber: 23,
+    title: "Requisições e respostas",
+    description:
+      "Hoje você vai entender o ciclo básico de uma integração: pedir uma informação e receber uma resposta.",
+    objective:
+      "Aprender o conceito de requisição e resposta em integrações.",
+    summary:
+      "Quando um sistema usa uma API, ele faz uma requisição. A API processa esse pedido e devolve uma resposta, geralmente com dados ou uma confirmação.",
+    concepts: [
+      {
+        title: "GET",
+        text: "Tipo de requisição usado para buscar informações.",
+      },
+      {
+        title: "POST",
+        text: "Tipo de requisição usado para enviar ou criar informações.",
+      },
+      {
+        title: "Status",
+        text: "Código que indica se a requisição deu certo ou falhou.",
+      },
+    ],
+    quiz: {
+      title: "Qual método costuma ser usado para buscar informações?",
+      options: [
+        {
+          id: "a",
+          text: "GET",
+          isCorrect: true,
+          explanation:
+            "Correto. GET costuma ser usado para buscar dados.",
+        },
+        {
+          id: "b",
+          text: "PINTAR",
+          isCorrect: false,
+          explanation:
+            "Esse não é um método comum de requisição em APIs.",
+        },
+        {
+          id: "c",
+          text: "ESQUECER",
+          isCorrect: false,
+          explanation:
+            "Não. Esse não é um método usado para buscar dados em APIs.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["get", "post", "requisição", "requisicao", "resposta"],
+        response:
+          "GET é como perguntar: 'quais dados existem?'. POST é como dizer: 'registre esta nova informação'.",
+      },
+    ],
+    closing:
+      "Você aprendeu o fluxo básico de uma API: requisição, processamento e resposta.",
+  },
+  {
+    slug: "dia-24",
+    dayNumber: 24,
+    title: "Introdução à automação",
+    description:
+      "Hoje você vai entender como pequenas automações podem economizar tempo no atendimento e suporte.",
+    objective:
+      "Compreender o que é automação e identificar tarefas repetitivas que podem ser automatizadas.",
+    summary:
+      "Automação é usar tecnologia para executar tarefas repetitivas com menos esforço manual. Em suporte, isso pode incluir organizar chamados, enviar mensagens padrão ou gerar relatórios.",
+    concepts: [
+      {
+        title: "Automação",
+        text: "Processo que executa tarefas com pouca ou nenhuma intervenção manual.",
+      },
+      {
+        title: "Tarefa repetitiva",
+        text: "Atividade feita muitas vezes e que segue uma regra clara.",
+      },
+      {
+        title: "Ganho de produtividade",
+        text: "Resultado de economizar tempo e reduzir retrabalho.",
+      },
+    ],
+    quiz: {
+      title: "Qual tarefa é boa candidata para automação?",
+      options: [
+        {
+          id: "a",
+          text: "Enviar uma mensagem padrão sempre que um chamado for aberto",
+          isCorrect: true,
+          explanation:
+            "Correto. É uma tarefa repetitiva e com regra clara.",
+        },
+        {
+          id: "b",
+          text: "Conversar com empatia em uma situação delicada",
+          isCorrect: false,
+          explanation:
+            "Esse tipo de situação pode precisar de julgamento humano e cuidado emocional.",
+        },
+        {
+          id: "c",
+          text: "Ignorar todos os clientes",
+          isCorrect: false,
+          explanation:
+            "Isso não é automação útil. Automação deve melhorar processos, não prejudicar atendimento.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["automação", "automacao", "repetitiva", "produtividade"],
+        response:
+          "Uma boa automação começa com uma pergunta: 'eu faço isso muitas vezes do mesmo jeito?'. Se sim, talvez dê para automatizar.",
+      },
+    ],
+    closing:
+      "Você aprendeu que automações simples podem reduzir retrabalho e liberar tempo para tarefas mais importantes.",
+  },
+  {
+    slug: "dia-25",
+    dayNumber: 25,
+    title: "Arquivos e automações simples",
+    description:
+      "Hoje você vai entender como scripts podem ler arquivos e transformar informações em ações.",
+    objective:
+      "Aprender como arquivos podem servir como entrada para automações.",
+    summary:
+      "Muitas automações começam com arquivos: planilhas, CSVs, textos ou relatórios. Um script pode ler esses arquivos, filtrar informações e gerar uma nova saída.",
+    concepts: [
+      {
+        title: "Arquivo",
+        text: "Fonte de dados que pode ser lida por um programa.",
+      },
+      {
+        title: "CSV",
+        text: "Formato simples de tabela em texto, muito usado para exportar dados.",
+      },
+      {
+        title: "Processamento",
+        text: "Transformar os dados de entrada em uma saída útil.",
+      },
+    ],
+    quiz: {
+      title: "Qual exemplo mostra uma automação com arquivo?",
+      options: [
+        {
+          id: "a",
+          text: "Ler uma planilha de chamados e gerar uma lista de atrasados",
+          isCorrect: true,
+          explanation:
+            "Correto. O arquivo serve como entrada e o script gera uma saída útil.",
+        },
+        {
+          id: "b",
+          text: "Apagar todos os arquivos sem olhar",
+          isCorrect: false,
+          explanation:
+            "Isso é perigoso e não representa uma automação útil.",
+        },
+        {
+          id: "c",
+          text: "Trocar o papel de parede",
+          isCorrect: false,
+          explanation:
+            "Pode ser uma ação no computador, mas não representa bem automação de dados de suporte.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["arquivo", "csv", "planilha", "relatório", "relatorio"],
+        response:
+          "Pense em uma planilha exportada do sistema de atendimento. Um script pode ler essa planilha e destacar chamados urgentes automaticamente.",
+      },
+    ],
+    closing:
+      "Você aprendeu que arquivos podem alimentar automações simples e muito úteis no dia a dia.",
+  },
+  {
+    slug: "dia-26",
+    dayNumber: 26,
+    title: "Fluxos de atendimento automatizados",
+    description:
+      "Hoje você vai desenhar fluxos simples que unem regras, dados e ações automáticas.",
+    objective:
+      "Aprender a pensar em fluxos de automação aplicados ao suporte.",
+    summary:
+      "Um fluxo automatizado combina gatilho, condição e ação. Exemplo: quando um chamado urgente chega, verificar prioridade e enviar alerta.",
+    concepts: [
+      {
+        title: "Gatilho",
+        text: "Evento que inicia o fluxo, como a abertura de um chamado.",
+      },
+      {
+        title: "Condição",
+        text: "Regra que decide o caminho do fluxo.",
+      },
+      {
+        title: "Ação",
+        text: "Resultado executado pelo fluxo, como enviar alerta ou atualizar status.",
+      },
+    ],
+    quiz: {
+      title: "Qual combinação representa um fluxo automatizado?",
+      options: [
+        {
+          id: "a",
+          text: "Gatilho, condição e ação",
+          isCorrect: true,
+          explanation:
+            "Correto. Essa estrutura ajuda a organizar automações simples.",
+        },
+        {
+          id: "b",
+          text: "Sorte, palpite e confusão",
+          isCorrect: false,
+          explanation:
+            "Não. Automação precisa de regras claras, não de sorte.",
+        },
+        {
+          id: "c",
+          text: "Apenas escrever textos aleatórios",
+          isCorrect: false,
+          explanation:
+            "Não. Fluxos automatizados precisam de lógica e objetivo.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["fluxo", "gatilho", "condição", "condicao", "ação", "acao"],
+        response:
+          "Um fluxo é como um roteiro: quando algo acontece, o sistema verifica uma regra e executa uma ação. Isso é muito útil em suporte.",
+      },
+    ],
+    closing:
+      "Você aprendeu a pensar em automações como fluxos organizados de gatilho, condição e ação.",
+  },
+  {
+    slug: "dia-27",
+    dayNumber: 27,
+    title: "Projeto prático: triagem de chamados",
+    description:
+      "Hoje você vai pensar em um mini projeto para classificar chamados por prioridade.",
+    objective:
+      "Aplicar lógica, dados e automação em um caso prático de suporte.",
+    summary:
+      "A triagem de chamados é uma ótima aplicação prática: o sistema pode analisar assunto, prioridade e tempo de espera para ajudar a decidir o que deve ser atendido primeiro.",
+    concepts: [
+      {
+        title: "Triagem",
+        text: "Processo de organizar demandas por tipo, urgência ou prioridade.",
+      },
+      {
+        title: "Regra de negócio",
+        text: "Critério usado para decidir como o sistema deve agir.",
+      },
+      {
+        title: "Prioridade",
+        text: "Indicação do que precisa de atenção primeiro.",
+      },
+    ],
+    quiz: {
+      title: "Qual regra ajudaria numa triagem de chamados?",
+      options: [
+        {
+          id: "a",
+          text: "Se prioridade for alta, colocar no topo da fila",
+          isCorrect: true,
+          explanation:
+            "Correto. Essa regra ajuda a organizar o atendimento por urgência.",
+        },
+        {
+          id: "b",
+          text: "Atender sempre sem olhar prioridade",
+          isCorrect: false,
+          explanation:
+            "Isso pode fazer chamados urgentes esperarem demais.",
+        },
+        {
+          id: "c",
+          text: "Excluir chamados difíceis",
+          isCorrect: false,
+          explanation:
+            "Não. Chamados difíceis precisam de tratamento adequado, não exclusão.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["triagem", "prioridade", "chamado", "fila"],
+        response:
+          "Triagem é organizar a fila com inteligência. Você pode usar regras como prioridade, tempo de espera e tipo de problema.",
+      },
+    ],
+    closing:
+      "Você conectou lógica, dados e automação em um cenário prático de atendimento.",
+  },
+  {
+    slug: "dia-28",
+    dayNumber: 28,
+    title: "Projeto prático: relatório de atendimento",
+    description:
+      "Hoje você vai pensar em um relatório simples para mostrar volume, status e principais problemas.",
+    objective:
+      "Aprender a estruturar um relatório útil para acompanhamento de suporte.",
+    summary:
+      "Relatórios ajudam equipes a enxergar padrões. Um bom relatório pode mostrar quantos chamados foram abertos, quantos foram resolvidos e quais assuntos mais aparecem.",
+    concepts: [
+      {
+        title: "Relatório",
+        text: "Resumo organizado de informações importantes.",
+      },
+      {
+        title: "Agrupamento",
+        text: "Organizar dados por categoria, como assunto ou status.",
+      },
+      {
+        title: "Insight",
+        text: "Percepção útil gerada a partir dos dados.",
+      },
+    ],
+    quiz: {
+      title: "O que um bom relatório de atendimento deve ajudar a entender?",
+      options: [
+        {
+          id: "a",
+          text: "Volume, status e principais tipos de problema",
+          isCorrect: true,
+          explanation:
+            "Correto. Essas informações ajudam a melhorar o suporte.",
+        },
+        {
+          id: "b",
+          text: "Apenas a cor preferida do analista",
+          isCorrect: false,
+          explanation:
+            "Isso não ajuda diretamente a acompanhar atendimento.",
+        },
+        {
+          id: "c",
+          text: "Nada, relatórios nunca servem",
+          isCorrect: false,
+          explanation:
+            "Relatórios bem feitos ajudam muito na tomada de decisão.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["relatório", "relatorio", "insight", "volume", "status"],
+        response:
+          "Um relatório útil responde perguntas práticas: quantos chamados existem, quais estão pendentes e quais problemas mais aparecem.",
+      },
+    ],
+    closing:
+      "Você aprendeu que relatórios transformam dados em visão clara para melhorar atendimento.",
+  },
+  {
+    slug: "dia-29",
+    dayNumber: 29,
+    title: "Preparando seu portfólio",
+    description:
+      "Hoje você vai organizar o que aprendeu em uma apresentação simples de portfólio.",
+    objective:
+      "Entender como transformar sua trilha em evidências para entrevistas e oportunidades.",
+    summary:
+      "Um portfólio não precisa ser enorme. Ele precisa mostrar problema, solução, tecnologias usadas e resultado. Mesmo projetos simples podem demonstrar raciocínio e evolução.",
+    concepts: [
+      {
+        title: "Portfólio",
+        text: "Conjunto de projetos e evidências que mostram suas habilidades.",
+      },
+      {
+        title: "Problema",
+        text: "Situação real que você tentou resolver.",
+      },
+      {
+        title: "Solução",
+        text: "Como você aplicou tecnologia para melhorar a situação.",
+      },
+    ],
+    quiz: {
+      title: "O que um bom projeto de portfólio deve mostrar?",
+      options: [
+        {
+          id: "a",
+          text: "Problema, solução, tecnologias e resultado",
+          isCorrect: true,
+          explanation:
+            "Correto. Isso mostra raciocínio, prática e impacto.",
+        },
+        {
+          id: "b",
+          text: "Apenas frases vagas sem projeto",
+          isCorrect: false,
+          explanation:
+            "Frases vagas ajudam pouco. O ideal é mostrar algo concreto.",
+        },
+        {
+          id: "c",
+          text: "Só uma imagem sem explicação",
+          isCorrect: false,
+          explanation:
+            "Imagens podem ajudar, mas precisam de contexto e explicação.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["portfólio", "portfolio", "entrevista", "projeto"],
+        response:
+          "Para montar seu portfólio, explique: qual problema existia, o que você construiu, quais tecnologias usou e qual melhoria isso poderia gerar.",
+      },
+    ],
+    closing:
+      "Você aprendeu a transformar sua jornada em evidência prática para oportunidades na área de tecnologia.",
+  },
+  {
+    slug: "dia-30",
+    dayNumber: 30,
+    title: "Fechamento da trilha e próximos passos",
+    description:
+      "Hoje você vai revisar sua evolução e definir próximos passos para continuar crescendo em suporte com tecnologia.",
+    objective:
+      "Concluir a trilha de 30 dias e planejar a continuidade dos estudos.",
+    summary:
+      "Você passou por lógica, Python, dados, SQL, APIs, automação e projetos práticos. Agora tem uma base para continuar evoluindo com mais confiança.",
+    concepts: [
+      {
+        title: "Evolução",
+        text: "O progresso construído aula por aula ao longo da trilha.",
+      },
+      {
+        title: "Consistência",
+        text: "Capacidade de continuar estudando e praticando mesmo aos poucos.",
+      },
+      {
+        title: "Próximos passos",
+        text: "Plano para continuar estudando, criando projetos e buscando oportunidades.",
+      },
+    ],
+    quiz: {
+      title: "Qual é o melhor próximo passo após a trilha?",
+      options: [
+        {
+          id: "a",
+          text: "Continuar praticando com projetos reais e melhorar o portfólio",
+          isCorrect: true,
+          explanation:
+            "Correto. A continuidade vem com prática, projetos e revisão constante.",
+        },
+        {
+          id: "b",
+          text: "Parar de estudar para sempre",
+          isCorrect: false,
+          explanation:
+            "Não. Tecnologia exige aprendizado contínuo.",
+        },
+        {
+          id: "c",
+          text: "Apagar tudo que foi feito",
+          isCorrect: false,
+          explanation:
+            "Não. O que você construiu serve como base e portfólio.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["próximos", "proximos", "carreira", "portfólio", "portfolio"],
+        response:
+          "Seu próximo passo pode ser melhorar este projeto, criar um README forte, publicar no GitHub e treinar uma apresentação curta sobre o que você construiu.",
+      },
+    ],
+    closing:
+      "Você concluiu a trilha de 30 dias. Agora tem uma base sólida para continuar estudando, criando projetos e buscando oportunidades em suporte com tecnologia.",
+  },
 ];
 
 export function getLessonBySlug(slug: string) {
