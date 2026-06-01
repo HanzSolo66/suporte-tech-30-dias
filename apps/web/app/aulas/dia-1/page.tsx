@@ -31,10 +31,50 @@ const question = {
 
 export default function AulaDia1Page() {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [difficulty, setDifficulty] = useState("");
+  const [alexResponse, setAlexResponse] = useState("");
 
   const selectedAnswer = question.options.find(
     (option) => option.id === selectedOption
   );
+
+  function handleAskAlex() {
+    if (!difficulty.trim()) {
+      setAlexResponse(
+        "Me conta primeiro qual foi sua dificuldade. Pode escrever do seu jeito, sem se preocupar com termos técnicos."
+      );
+      return;
+    }
+
+    const lowerDifficulty = difficulty.toLowerCase();
+
+    if (
+      lowerDifficulty.includes("lógica") ||
+      lowerDifficulty.includes("logica") ||
+      lowerDifficulty.includes("programação") ||
+      lowerDifficulty.includes("programacao")
+    ) {
+      setAlexResponse(
+        "Entendi. Lógica de programação é como montar um passo a passo para resolver um problema. Pense em atendimento: se o cliente esqueceu a senha, você verifica o cadastro, confirma os dados e envia a recuperação. Isso já é lógica: condição, decisão e ação. Material de apoio: procure no Curso em Vídeo por 'Lógica de Programação'."
+      );
+      return;
+    }
+
+    if (
+      lowerDifficulty.includes("atendimento") ||
+      lowerDifficulty.includes("suporte") ||
+      lowerDifficulty.includes("cliente")
+    ) {
+      setAlexResponse(
+        "Boa dúvida. A ideia da trilha é aproveitar sua experiência com atendimento para entrar em tecnologia. Você já entende pessoas, problemas e processos. Agora vamos somar ferramentas: lógica, Python, SQL e automações para melhorar o suporte. Material de apoio: revise exemplos de chamados, tickets e fluxos de atendimento."
+      );
+      return;
+    }
+
+    setAlexResponse(
+      "Obrigado por compartilhar. Minha sugestão é revisar o resumo da aula e tentar explicar com suas palavras o que você entendeu. Se travar, divida a dúvida em uma frase simples: 'não entendi o que é...' ou 'não sei quando usar...'. Material de apoio: procure uma explicação inicial no Curso em Vídeo relacionada ao tema."
+    );
+  }
 
   return (
     <main
@@ -184,6 +224,7 @@ export default function AulaDia1Page() {
 
         <section style={cardStyle}>
           <h2>Resumo do dia</h2>
+
           <p style={mutedStyle}>
             Hoje você entendeu o propósito da trilha: usar tecnologia como
             ferramenta para melhorar atendimento, suporte, organização de dados
@@ -199,12 +240,86 @@ export default function AulaDia1Page() {
               border: "1px solid rgba(34,211,238,0.25)",
             }}
           >
-            <strong>Teve alguma dificuldade?</strong>
+            <strong>Fechamento da aula</strong>
             <p style={{ ...mutedStyle, marginBottom: 0 }}>
-              Na próxima etapa vamos criar o Assistente Alex para você registrar
-              dúvidas e receber materiais paralelos de apoio.
+              Você começou entendendo que tecnologia não precisa ser distante:
+              ela pode nascer de problemas reais que você já conhece no
+              atendimento.
             </p>
           </div>
+        </section>
+
+        <section style={cardStyle}>
+          <p
+            style={{
+              color: "#22d3ee",
+              fontWeight: 800,
+              textTransform: "uppercase",
+              letterSpacing: "0.12em",
+            }}
+          >
+            Assistente Alex
+          </p>
+
+          <h2>Teve alguma dificuldade?</h2>
+
+          <p style={mutedStyle}>
+            Escreva abaixo o que ficou confuso. O Alex vai responder com uma
+            explicação simples e um material paralelo para revisar.
+          </p>
+
+          <textarea
+            value={difficulty}
+            onChange={(event) => setDifficulty(event.target.value)}
+            placeholder="Exemplo: não entendi o que é lógica de programação..."
+            style={{
+              width: "100%",
+              minHeight: "120px",
+              marginTop: "16px",
+              padding: "16px",
+              borderRadius: "16px",
+              border: "1px solid rgba(255,255,255,0.16)",
+              background: "rgba(255,255,255,0.06)",
+              color: "white",
+              fontSize: "16px",
+              resize: "vertical",
+              boxSizing: "border-box",
+            }}
+          />
+
+          <button
+            onClick={handleAskAlex}
+            style={{
+              marginTop: "16px",
+              padding: "16px",
+              borderRadius: "16px",
+              border: "none",
+              background: "#22d3ee",
+              color: "#020617",
+              fontWeight: 900,
+              cursor: "pointer",
+              fontSize: "16px",
+            }}
+          >
+            Pedir ajuda ao Alex
+          </button>
+
+          {alexResponse && (
+            <div
+              style={{
+                marginTop: "20px",
+                padding: "20px",
+                borderRadius: "18px",
+                background: "rgba(34,211,238,0.1)",
+                border: "1px solid rgba(34,211,238,0.25)",
+              }}
+            >
+              <strong>Resposta do Alex</strong>
+              <p style={{ ...mutedStyle, marginBottom: 0 }}>
+                {alexResponse}
+              </p>
+            </div>
+          )}
         </section>
       </section>
     </main>
