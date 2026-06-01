@@ -878,6 +878,426 @@ export const lessons: Lesson[] = [
     closing:
       "Você concluiu a base inicial de Python. Agora já consegue entender a lógica por trás de muitas automações simples.",
   },
+  {
+    slug: "dia-15",
+    dayNumber: 15,
+    title: "Introdução a dados",
+    description:
+      "Hoje você vai entender o que são dados e por que eles são importantes para atendimento, suporte e tomada de decisão.",
+    objective:
+      "Compreender o papel dos dados em sistemas, relatórios e melhorias de atendimento.",
+    summary:
+      "Dados são informações organizadas que ajudam empresas a entender problemas, medir resultados e tomar decisões melhores. Em suporte, dados aparecem em chamados, avaliações, tempos de resposta e categorias de problema.",
+    concepts: [
+      {
+        title: "Dados",
+        text: "Informações que podem ser armazenadas, consultadas e analisadas.",
+      },
+      {
+        title: "Registro",
+        text: "Uma linha de informação sobre algo, como um chamado ou cliente.",
+      },
+      {
+        title: "Indicador",
+        text: "Uma medida que ajuda a acompanhar desempenho, como tempo médio de atendimento.",
+      },
+    ],
+    quiz: {
+      title: "Qual exemplo representa melhor um dado em suporte?",
+      options: [
+        {
+          id: "a",
+          text: "Tempo médio de resposta de um chamado",
+          isCorrect: true,
+          explanation:
+            "Correto. Esse dado pode ser medido, acompanhado e usado para melhorar o atendimento.",
+        },
+        {
+          id: "b",
+          text: "Apenas uma opinião sem registro",
+          isCorrect: false,
+          explanation:
+            "Uma opinião pode ser útil, mas dado precisa estar registrado de forma que possa ser consultado ou analisado.",
+        },
+        {
+          id: "c",
+          text: "Um botão colorido na tela",
+          isCorrect: false,
+          explanation:
+            "O botão é parte da interface. O dado seria uma informação armazenada ou analisada.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["dados", "indicador", "registro", "relatório", "relatorio"],
+        response:
+          "Pense em dados como rastros do atendimento. Cada chamado, tempo de resposta e avaliação ajuda a entender onde melhorar.",
+      },
+    ],
+    closing:
+      "Você aprendeu que dados são fundamentais para transformar atendimento em melhoria contínua.",
+  },
+  {
+    slug: "dia-16",
+    dayNumber: 16,
+    title: "Tabelas e estrutura de dados",
+    description:
+      "Hoje você vai entender como informações podem ser organizadas em tabelas, linhas e colunas.",
+    objective:
+      "Aprender a enxergar dados em formato de tabela, como acontece em planilhas e bancos de dados.",
+    summary:
+      "Tabelas organizam dados em linhas e colunas. Cada linha representa um registro, e cada coluna representa uma característica daquele registro.",
+    concepts: [
+      {
+        title: "Tabela",
+        text: "Estrutura que organiza informações em linhas e colunas.",
+      },
+      {
+        title: "Linha",
+        text: "Representa um registro, como um chamado específico.",
+      },
+      {
+        title: "Coluna",
+        text: "Representa um tipo de informação, como status, prioridade ou data.",
+      },
+    ],
+    quiz: {
+      title: "Em uma tabela de chamados, o que uma linha normalmente representa?",
+      options: [
+        {
+          id: "a",
+          text: "Um chamado específico",
+          isCorrect: true,
+          explanation:
+            "Correto. Cada linha costuma representar um registro, como um chamado.",
+        },
+        {
+          id: "b",
+          text: "Todas as empresas do mundo",
+          isCorrect: false,
+          explanation:
+            "Não. Uma linha representa um registro específico dentro daquela tabela.",
+        },
+        {
+          id: "c",
+          text: "A cor do site",
+          isCorrect: false,
+          explanation:
+            "A cor do site é configuração visual, não uma linha de dados.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["tabela", "linha", "coluna", "planilha"],
+        response:
+          "Imagine uma planilha de chamados: cada linha é um chamado, e cada coluna mostra algo sobre ele, como cliente, status, prioridade e data.",
+      },
+    ],
+    closing:
+      "Você aprendeu a ler dados em tabelas, uma base importante para SQL, relatórios e análise.",
+  },
+  {
+    slug: "dia-17",
+    dayNumber: 17,
+    title: "Introdução a SQL",
+    description:
+      "Hoje você vai conhecer SQL, a linguagem usada para consultar dados em bancos de dados.",
+    objective:
+      "Entender para que serve SQL e como ele ajuda a buscar informações organizadas.",
+    summary:
+      "SQL é usado para conversar com bancos de dados. Com ele, podemos buscar, filtrar, ordenar e analisar informações armazenadas em tabelas.",
+    concepts: [
+      {
+        title: "SQL",
+        text: "Linguagem usada para consultar e manipular dados em bancos de dados relacionais.",
+      },
+      {
+        title: "Banco de dados",
+        text: "Local onde informações são armazenadas de forma organizada.",
+      },
+      {
+        title: "Consulta",
+        text: "Pedido feito ao banco para trazer informações específicas.",
+      },
+    ],
+    quiz: {
+      title: "Para que serve SQL?",
+      options: [
+        {
+          id: "a",
+          text: "Consultar e manipular dados em bancos de dados",
+          isCorrect: true,
+          explanation:
+            "Correto. SQL é muito usado para buscar informações organizadas em tabelas.",
+        },
+        {
+          id: "b",
+          text: "Somente desenhar telas bonitas",
+          isCorrect: false,
+          explanation:
+            "Não. SQL é voltado a dados, não à aparência visual da interface.",
+        },
+        {
+          id: "c",
+          text: "Substituir completamente o atendimento humano",
+          isCorrect: false,
+          explanation:
+            "Não. SQL ajuda a analisar dados, mas não substitui todo o atendimento humano.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["sql", "banco", "consulta", "dados"],
+        response:
+          "Pense no SQL como uma pergunta bem organizada para uma base de dados. Exemplo: 'quais chamados estão abertos?'",
+      },
+    ],
+    closing:
+      "Você conheceu SQL e entendeu como ele ajuda a buscar respostas dentro de grandes volumes de dados.",
+  },
+  {
+    slug: "dia-18",
+    dayNumber: 18,
+    title: "Filtrando dados com SQL",
+    description:
+      "Hoje você vai entender como filtrar informações para encontrar exatamente o que precisa.",
+    objective:
+      "Aprender o conceito de filtro em consultas de dados.",
+    summary:
+      "Filtros ajudam a reduzir uma lista grande de dados para mostrar apenas o que atende a uma condição, como chamados abertos ou clientes de uma cidade específica.",
+    concepts: [
+      {
+        title: "Filtro",
+        text: "Regra usada para mostrar apenas dados que atendem a uma condição.",
+      },
+      {
+        title: "WHERE",
+        text: "Comando usado em SQL para aplicar filtros.",
+      },
+      {
+        title: "Condição",
+        text: "Critério que define quais registros devem aparecer.",
+      },
+    ],
+    quiz: {
+      title: "Qual consulta representa melhor a ideia de filtro?",
+      options: [
+        {
+          id: "a",
+          text: "Mostrar apenas chamados com status aberto",
+          isCorrect: true,
+          explanation:
+            "Correto. Esse é um filtro baseado na condição status aberto.",
+        },
+        {
+          id: "b",
+          text: "Mostrar tudo sem critério nenhum",
+          isCorrect: false,
+          explanation:
+            "Isso não é filtro. Filtrar significa reduzir os dados com uma regra.",
+        },
+        {
+          id: "c",
+          text: "Apagar todos os chamados sem conferir",
+          isCorrect: false,
+          explanation:
+            "Não. Filtrar é consultar dados, não apagar informações.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["where", "filtro", "filtrar", "condição", "condicao"],
+        response:
+          "Filtro é como procurar no sistema apenas o que importa naquele momento. Exemplo: ver só chamados abertos ou só atendimentos atrasados.",
+      },
+    ],
+    closing:
+      "Você aprendeu que filtros são essenciais para encontrar dados relevantes rapidamente.",
+  },
+  {
+    slug: "dia-19",
+    dayNumber: 19,
+    title: "Ordenação e prioridades",
+    description:
+      "Hoje você vai entender como ordenar dados por prioridade, data, tempo ou importância.",
+    objective:
+      "Aprender por que ordenação ajuda a transformar dados em ação.",
+    summary:
+      "Ordenar dados permite ver primeiro o que é mais urgente, recente, antigo, caro, frequente ou importante. Em suporte, isso ajuda a priorizar atendimentos.",
+    concepts: [
+      {
+        title: "Ordenação",
+        text: "Organização dos dados em uma sequência específica.",
+      },
+      {
+        title: "Crescente",
+        text: "Ordem do menor para o maior, ou do mais antigo para o mais recente.",
+      },
+      {
+        title: "Decrescente",
+        text: "Ordem do maior para o menor, ou do mais recente para o mais antigo.",
+      },
+    ],
+    quiz: {
+      title: "Por que ordenar chamados pode ajudar uma equipe de suporte?",
+      options: [
+        {
+          id: "a",
+          text: "Para priorizar os mais urgentes ou mais antigos",
+          isCorrect: true,
+          explanation:
+            "Correto. Ordenar ajuda a decidir o que deve receber atenção primeiro.",
+        },
+        {
+          id: "b",
+          text: "Para esconder problemas importantes",
+          isCorrect: false,
+          explanation:
+            "Não. A ordenação deve ajudar a enxergar prioridades, não esconder informações.",
+        },
+        {
+          id: "c",
+          text: "Para impedir que os dados sejam analisados",
+          isCorrect: false,
+          explanation:
+            "Não. Ordenar facilita a análise dos dados.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["ordenar", "ordenação", "ordenacao", "prioridade"],
+        response:
+          "Ordenar é colocar os dados em uma fila inteligente. Em suporte, você pode ordenar por urgência, data de abertura ou tempo parado.",
+      },
+    ],
+    closing:
+      "Você aprendeu que ordenar dados ajuda a equipe a tomar decisões melhores e agir com prioridade.",
+  },
+  {
+    slug: "dia-20",
+    dayNumber: 20,
+    title: "Métricas de atendimento",
+    description:
+      "Hoje você vai conhecer métricas que ajudam a avaliar qualidade e eficiência no suporte.",
+    objective:
+      "Entender métricas comuns de atendimento e como elas mostram oportunidades de melhoria.",
+    summary:
+      "Métricas são medidas usadas para acompanhar desempenho. Em atendimento, elas ajudam a entender volume, tempo, satisfação, resolução e gargalos.",
+    concepts: [
+      {
+        title: "Tempo médio de resposta",
+        text: "Tempo que a equipe leva para responder um cliente.",
+      },
+      {
+        title: "Tempo médio de resolução",
+        text: "Tempo necessário para resolver um problema.",
+      },
+      {
+        title: "Satisfação",
+        text: "Indicador que mostra como o cliente avaliou o atendimento.",
+      },
+    ],
+    quiz: {
+      title: "Qual métrica mede quanto tempo a equipe leva para resolver problemas?",
+      options: [
+        {
+          id: "a",
+          text: "Tempo médio de resolução",
+          isCorrect: true,
+          explanation:
+            "Correto. Essa métrica acompanha quanto tempo um problema leva para ser resolvido.",
+        },
+        {
+          id: "b",
+          text: "Cor do botão principal",
+          isCorrect: false,
+          explanation:
+            "Isso é um elemento visual, não uma métrica de resolução.",
+        },
+        {
+          id: "c",
+          text: "Nome do computador",
+          isCorrect: false,
+          explanation:
+            "O nome do computador pode ser um dado, mas não mede resolução de atendimento.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["métrica", "metrica", "tempo", "satisfação", "satisfacao"],
+        response:
+          "Métricas ajudam a responder perguntas como: estamos demorando muito? Quais assuntos aparecem mais? Os clientes estão satisfeitos?",
+      },
+    ],
+    closing:
+      "Você aprendeu que métricas transformam atendimento em algo mensurável e melhorável.",
+  },
+  {
+    slug: "dia-21",
+    dayNumber: 21,
+    title: "Revisão de dados e SQL",
+    description:
+      "Hoje vamos revisar dados, tabelas, SQL, filtros, ordenação e métricas aplicadas ao suporte.",
+    objective:
+      "Consolidar a base de dados antes de avançar para APIs e automações.",
+    summary:
+      "Nesta semana você aprendeu como dados são organizados, consultados e analisados. Também viu como métricas ajudam a melhorar atendimento e suporte.",
+    concepts: [
+      {
+        title: "Dados estruturados",
+        text: "Informações organizadas de forma que possam ser consultadas e analisadas.",
+      },
+      {
+        title: "SQL",
+        text: "Linguagem usada para buscar informações em bancos de dados.",
+      },
+      {
+        title: "Métricas",
+        text: "Medidas que ajudam a acompanhar desempenho e identificar melhorias.",
+      },
+    ],
+    quiz: {
+      title: "Qual conjunto resume melhor esta semana?",
+      options: [
+        {
+          id: "a",
+          text: "Dados, tabelas, SQL, filtros, ordenação e métricas",
+          isCorrect: true,
+          explanation:
+            "Correto. Esses conceitos formam uma base importante para análise e suporte orientado por dados.",
+        },
+        {
+          id: "b",
+          text: "Apenas trocar imagens no site",
+          isCorrect: false,
+          explanation:
+            "Não. A semana foi focada em dados, consultas e indicadores.",
+        },
+        {
+          id: "c",
+          text: "Ignorar informações registradas",
+          isCorrect: false,
+          explanation:
+            "Não. O objetivo foi justamente aprender a usar informações registradas para melhorar decisões.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["revisão", "revisao", "sql", "dados", "métricas", "metricas"],
+        response:
+          "Revise pensando como analista de suporte: quais chamados existem, quais estão atrasados, quais assuntos mais aparecem e quais métricas mostram melhoria.",
+      },
+    ],
+    closing:
+      "Você concluiu a semana de dados e SQL. Agora está pronto para conectar sistemas e pensar em automações.",
+  },
 ];
 
 export function getLessonBySlug(slug: string) {
