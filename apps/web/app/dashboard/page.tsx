@@ -26,16 +26,16 @@ export default function DashboardPage() {
     }
   }, []);
 
-  const completedDays = progress.completedLessons.length;
-  const xp = completedDays * 120 + progress.alexUsedLessons.length * 30;
-
+  const completedLessons = progress.completedLessons.length;
+  const totalLessons = lessons.length;
+  const alexUses = progress.alexUsedLessons.length;
+  const progressPercent = Math.round((completedLessons / totalLessons) * 100);
+  const trailCompleted = completedLessons >= totalLessons;
   const currentLesson =
-    lessons.find((lesson) => !progress.completedLessons.includes(lesson.slug)) ||
+    lessons.find((lesson) => !progress.completedLessons.includes(lesson.slug)) ??
     lessons[lessons.length - 1];
 
-  const currentLessonIndex = lessons.findIndex(
-    (lesson) => lesson.slug === currentLesson.slug
-  );
+  const xp = completedLessons * 120 + alexUses * 30;
 
   return (
     <main
@@ -47,24 +47,26 @@ export default function DashboardPage() {
         padding: "40px",
       }}
     >
-      <section style={{ maxWidth: "1140px", margin: "0 auto" }}>
-        <p style={eyebrowStyle}>Painel do aluno</p>
-
-        <div
+      <section style={{ maxWidth: "1180px", margin: "0 auto" }}>
+        <section
           style={{
             display: "flex",
             justifyContent: "space-between",
             gap: "24px",
             alignItems: "flex-start",
             flexWrap: "wrap",
+            marginBottom: "36px",
           }}
         >
           <div>
+            <p style={eyebrowStyle}>Painel do aluno</p>
+
             <h1
               style={{
-                fontSize: "48px",
-                lineHeight: 1.1,
-                margin: "12px 0",
+                fontSize: "52px",
+                lineHeight: 1.05,
+                marginTop: "14px",
+                marginBottom: "16px",
               }}
             >
               Bem-vindo à sua missão, Matheus.
@@ -83,81 +85,116 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          <a
-            href="/"
-            style={{
-              background: "#22d3ee",
-              color: "#020617",
-              textDecoration: "none",
-              padding: "16px 24px",
-              borderRadius: "16px",
-              fontWeight: 900,
-              whiteSpace: "nowrap",
-            }}
-          >
-            Voltar para home
-          </a>
-        </div>
+          <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+            <a
+              href="/"
+              style={{
+                color: "#020617",
+                background: "#22d3ee",
+                textDecoration: "none",
+                padding: "14px 20px",
+                borderRadius: "16px",
+                fontWeight: 900,
+                whiteSpace: "nowrap",
+              }}
+            >
+              Voltar para home
+            </a>
+
+            <a
+              href="/certificado"
+              style={{
+                color: "#020617",
+                background: trailCompleted ? "#22c55e" : "#94a3b8",
+                textDecoration: "none",
+                padding: "14px 20px",
+                borderRadius: "16px",
+                fontWeight: 900,
+                whiteSpace: "nowrap",
+              }}
+            >
+              {trailCompleted ? "Ver certificado" : "Certificado bloqueado"}
+            </a>
+          </div>
+        </section>
 
         <section
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
             gap: "20px",
-            marginTop: "40px",
+            marginBottom: "28px",
           }}
         >
           <InfoCard
             label="Progresso"
-            value={`${completedDays}/${lessons.length}`}
-            description={
-              completedDays > 0
-                ? `${completedDays} aula(s) concluída(s)`
-                : "Comece pela primeira aula"
-            }
+            value={`${completedLessons}/${totalLessons}`}
+            description="Aulas concluídas"
           />
-
           <InfoCard
             label="XP"
             value={String(xp)}
             description="Pontos acumulados"
           />
-
           <InfoCard
             label="Sequência"
-            value={completedDays > 0 ? `${completedDays} dia(s)` : "0 dias"}
-            description={
-              completedDays > 0
-                ? "Continue estudando diariamente"
-                : "Finalize o primeiro dia"
-            }
+            value={`${Math.max(completedLessons, 1)} dia${
+              Math.max(completedLessons, 1) === 1 ? "" : "s"
+            }`}
+            description="Continue estudando diariamente"
           />
-
           <InfoCard
-            label="Nível"
-            value={
-              completedDays >= 3
-                ? "Aprendiz"
-                : completedDays >= 1
-                ? "Iniciante+"
-                : "Iniciante"
-            }
+            label="Status"
+            value={trailCompleted ? "Concluído" : "Em andamento"}
             description={
-              completedDays >= 3
-                ? "Você concluiu a primeira sequência"
-                : completedDays >= 1
-                ? "Primeira missão concluída"
-                : "Primeira fase desbloqueada"
+              trailCompleted
+                ? "Trilha completa"
+                : "Continue desbloqueando aulas"
             }
           />
         </section>
 
         <section
           style={{
+            marginBottom: "28px",
+            padding: "24px",
+            borderRadius: "24px",
+            border: "1px solid rgba(255,255,255,0.12)",
+            background: "rgba(255,255,255,0.06)",
+          }}
+        >
+          <p style={eyebrowStyle}>Progresso geral</p>
+
+          <div
+            style={{
+              marginTop: "16px",
+              height: "18px",
+              background: "rgba(255,255,255,0.1)",
+              borderRadius: "999px",
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                width: `${progressPercent}%`,
+                height: "100%",
+                background: "#22d3ee",
+                borderRadius: "999px",
+              }}
+            />
+          </div>
+
+          <p style={{ color: "#cbd5e1", marginTop: "12px" }}>
+            {progressPercent}% da trilha concluída.
+          </p>
+        </section>
+
+        <section
+          style={{
             display: "grid",
-            gridTemplateColumns: "minmax(0, 1.5fr) minmax(280px, 1fr)",
-            gap: "24px",
-            marginTop: "32px",
+            gridTemplateColumns: "minmax(0, 1.4fr) minmax(280px, 0.8fr)",
+            gap: "28px",
+            alignItems: "start",
           }}
         >
           <section style={cardStyle}>
@@ -166,79 +203,116 @@ export default function DashboardPage() {
                 display: "flex",
                 justifyContent: "space-between",
                 gap: "16px",
-                alignItems: "center",
                 flexWrap: "wrap",
+                alignItems: "center",
               }}
             >
               <div>
-                <p style={eyebrowStyle}>Semana 1</p>
-                <h2 style={{ fontSize: "32px", marginTop: "8px" }}>
-                  Missões da semana
+                <p style={eyebrowStyle}>Semana atual</p>
+                <h2 style={{ fontSize: "34px", margin: "8px 0 0" }}>
+                  Missões da trilha
                 </h2>
               </div>
 
               <span
                 style={{
-                  color: "#67e8f9",
-                  border: "1px solid rgba(34,211,238,0.45)",
+                  color: "#22d3ee",
+                  border: "1px solid rgba(34,211,238,0.35)",
                   borderRadius: "999px",
-                  padding: "10px 16px",
-                  fontWeight: 800,
+                  padding: "10px 14px",
+                  fontWeight: 900,
                 }}
               >
-                Base e confiança
+                {trailCompleted ? "Trilha concluída" : "Continue avançando"}
               </span>
             </div>
 
-            <div style={{ display: "grid", gap: "14px", marginTop: "24px" }}>
-              {lessons.map((lesson, index) => {
-                const completed = progress.completedLessons.includes(
+            <div style={{ display: "grid", gap: "12px", marginTop: "24px" }}>
+              {lessons.map((lesson) => {
+                const isCompleted = progress.completedLessons.includes(
                   lesson.slug
                 );
-
-                const previousLesson = lessons[index - 1];
-
-                const unlocked =
-                  index === 0 ||
-                  progress.completedLessons.includes(previousLesson.slug);
+                const isCurrent = currentLesson.slug === lesson.slug;
 
                 return (
-                  <MissionCard
+                  <a
                     key={lesson.slug}
-                    day={`Dia ${lesson.dayNumber}`}
-                    title={lesson.title}
-                    status={
-                      completed
+                    href={`/aulas/${lesson.slug}`}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      gap: "16px",
+                      alignItems: "center",
+                      textDecoration: "none",
+                      color: "white",
+                      padding: "18px",
+                      borderRadius: "18px",
+                      border: isCurrent
+                        ? "1px solid rgba(34,211,238,0.7)"
+                        : "1px solid rgba(255,255,255,0.12)",
+                      background: isCompleted
+                        ? "rgba(34,197,94,0.14)"
+                        : isCurrent
+                        ? "rgba(34,211,238,0.08)"
+                        : "rgba(255,255,255,0.04)",
+                    }}
+                  >
+                    <div>
+                      <p
+                        style={{
+                          color: "#22d3ee",
+                          fontWeight: 900,
+                          margin: 0,
+                        }}
+                      >
+                        Dia {lesson.dayNumber}
+                      </p>
+
+                      <strong
+                        style={{
+                          display: "block",
+                          marginTop: "6px",
+                          fontSize: "18px",
+                        }}
+                      >
+                        {lesson.title}
+                      </strong>
+                    </div>
+
+                    <strong
+                      style={{
+                        color: isCompleted ? "#86efac" : "#67e8f9",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {isCompleted
                         ? "Concluído"
-                        : unlocked
-                        ? "Disponível"
-                        : "Bloqueado"
-                    }
-                    href={unlocked ? `/aulas/${lesson.slug}` : "/dashboard"}
-                    completed={completed}
-                    locked={!unlocked}
-                  />
+                        : isCurrent
+                        ? "Próxima missão"
+                        : "Bloqueada"}
+                    </strong>
+                  </a>
                 );
               })}
             </div>
           </section>
 
-          <section style={cardStyle}>
+          <aside style={cardStyle}>
             <p style={eyebrowStyle}>Mentor IA</p>
 
-            <h2 style={{ fontSize: "32px", marginTop: "8px" }}>
+            <h2 style={{ fontSize: "34px", marginTop: "8px" }}>
               Assistente Alex
             </h2>
 
-            <p style={mutedStyle}>
-              O Alex acompanha seu progresso e ajuda quando você trava em algum
-              conceito.
+            <p style={{ color: "#cbd5e1", lineHeight: 1.7, fontSize: "17px" }}>
+              Está com dificuldade? O Alex pode explicar de forma simples,
+              sugerir revisão e ajudar você a continuar sem travar.
             </p>
 
             <div
               style={{
                 marginTop: "24px",
-                padding: "18px",
+                padding: "20px",
                 borderRadius: "18px",
                 background: "rgba(34,211,238,0.1)",
                 border: "1px solid rgba(34,211,238,0.25)",
@@ -246,10 +320,15 @@ export default function DashboardPage() {
             >
               <strong>Dica do Alex</strong>
 
-              <p style={{ ...mutedStyle, marginBottom: 0 }}>
-                {completedDays === lessons.length
-                  ? "Você concluiu todas as aulas disponíveis. Excelente progresso!"
-                  : `Sua aula atual é o Dia ${currentLesson.dayNumber}: ${currentLesson.title}.`}
+              <p
+                style={{
+                  color: "#cbd5e1",
+                  lineHeight: 1.7,
+                  marginBottom: 0,
+                }}
+              >
+                Faça uma aula por vez, responda o quiz e use o feedback do erro
+                como revisão. Errar faz parte do treino.
               </p>
             </div>
 
@@ -258,35 +337,36 @@ export default function DashboardPage() {
               style={{
                 display: "inline-block",
                 marginTop: "24px",
-                background: "#22d3ee",
                 color: "#020617",
+                background: "#22d3ee",
                 textDecoration: "none",
                 padding: "14px 20px",
                 borderRadius: "16px",
                 fontWeight: 900,
               }}
             >
-              Ir para a aula atual
+              Continuar aula
             </a>
 
-            <div
-              style={{
-                marginTop: "24px",
-                padding: "18px",
-                borderRadius: "18px",
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.1)",
-              }}
-            >
-              <strong>Próximo passo</strong>
-
-              <p style={{ ...mutedStyle, marginBottom: 0 }}>
-                {currentLessonIndex + 1 < lessons.length
-                  ? "Conclua a aula atual para liberar a próxima missão."
-                  : "Você chegou ao fim das aulas cadastradas nesta versão."}
-              </p>
-            </div>
-          </section>
+            {trailCompleted && (
+              <a
+                href="/certificado"
+                style={{
+                  display: "inline-block",
+                  marginTop: "12px",
+                  marginLeft: "12px",
+                  color: "#020617",
+                  background: "#22c55e",
+                  textDecoration: "none",
+                  padding: "14px 20px",
+                  borderRadius: "16px",
+                  fontWeight: 900,
+                }}
+              >
+                Ver certificado
+              </a>
+            )}
+          </aside>
         </section>
       </section>
     </main>
@@ -305,71 +385,13 @@ function InfoCard({
   return (
     <div style={cardStyle}>
       <p style={eyebrowStyle}>{label}</p>
-      <strong style={{ fontSize: "38px", display: "block", marginTop: "8px" }}>
+
+      <strong style={{ fontSize: "36px", display: "block", marginTop: "10px" }}>
         {value}
       </strong>
-      <p style={{ ...mutedStyle, marginBottom: 0 }}>{description}</p>
+
+      <p style={{ color: "#cbd5e1", marginBottom: 0 }}>{description}</p>
     </div>
-  );
-}
-
-function MissionCard({
-  day,
-  title,
-  status,
-  href,
-  completed,
-  locked,
-}: {
-  day: string;
-  title: string;
-  status: string;
-  href: string;
-  completed: boolean;
-  locked: boolean;
-}) {
-  return (
-    <a
-      href={href}
-      style={{
-        display: "block",
-        textDecoration: "none",
-        color: "white",
-        padding: "20px",
-        borderRadius: "18px",
-        opacity: locked ? 0.55 : 1,
-        background: completed
-          ? "rgba(34,197,94,0.14)"
-          : "rgba(255,255,255,0.05)",
-        border: completed
-          ? "1px solid rgba(34,197,94,0.35)"
-          : "1px solid rgba(255,255,255,0.12)",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          gap: "16px",
-          alignItems: "center",
-          flexWrap: "wrap",
-        }}
-      >
-        <div>
-          <p style={{ ...eyebrowStyle, margin: 0 }}>{day}</p>
-          <strong style={{ fontSize: "18px" }}>{title}</strong>
-        </div>
-
-        <span
-          style={{
-            color: completed ? "#86efac" : locked ? "#94a3b8" : "#67e8f9",
-            fontWeight: 900,
-          }}
-        >
-          {status}
-        </span>
-      </div>
-    </a>
   );
 }
 
@@ -386,10 +408,4 @@ const eyebrowStyle: React.CSSProperties = {
   textTransform: "uppercase",
   letterSpacing: "0.16em",
   margin: 0,
-};
-
-const mutedStyle: React.CSSProperties = {
-  color: "#cbd5e1",
-  lineHeight: 1.7,
-  fontSize: "16px",
 };
