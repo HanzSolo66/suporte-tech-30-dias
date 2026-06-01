@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const question = {
   title: "Qual é o objetivo principal desta trilha?",
@@ -29,14 +29,53 @@ const question = {
   ],
 };
 
+const progressKey = "suporte-tech-progress";
+
+type ProgressData = {
+  day1QuizCompleted: boolean;
+  day1AlexUsed: boolean;
+};
+
+const initialProgress: ProgressData = {
+  day1QuizCompleted: false,
+  day1AlexUsed: false,
+};
+
 export default function AulaDia1Page() {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [difficulty, setDifficulty] = useState("");
   const [alexResponse, setAlexResponse] = useState("");
+  const [progress, setProgress] = useState<ProgressData>(initialProgress);
 
   const selectedAnswer = question.options.find(
     (option) => option.id === selectedOption
   );
+
+  useEffect(() => {
+    const savedProgress = window.localStorage.getItem(progressKey);
+
+    if (savedProgress) {
+      setProgress(JSON.parse(savedProgress));
+    }
+  }, []);
+
+  function saveProgress(newProgress: ProgressData) {
+    setProgress(newProgress);
+    window.localStorage.setItem(progressKey, JSON.stringify(newProgress));
+  }
+
+  function handleSelectOption(optionId: string) {
+    setSelectedOption(optionId);
+
+    const option = question.options.find((item) => item.id === optionId);
+
+    if (option?.isCorrect) {
+      saveProgress({
+        ...progress,
+        day1QuizCompleted: true,
+      });
+    }
+  }
 
   function handleAskAlex() {
     if (!difficulty.trim()) {
@@ -47,6 +86,11 @@ export default function AulaDia1Page() {
     }
 
     const lowerDifficulty = difficulty.toLowerCase();
+
+    saveProgress({
+      ...progress,
+      day1AlexUsed: true,
+    });
 
     if (
       lowerDifficulty.includes("lógica") ||
@@ -75,6 +119,11 @@ export default function AulaDia1Page() {
       "Obrigado por compartilhar. Minha sugestão é revisar o resumo da aula e tentar explicar com suas palavras o que você entendeu. Se travar, divida a dúvida em uma frase simples: 'não entendi o que é...' ou 'não sei quando usar...'. Material de apoio: procure uma explicação inicial no Curso em Vídeo relacionada ao tema."
     );
   }
+
+  const completedSteps = [
+    progress.day1QuizCompleted,
+    progress.day1AlexUsed,
+  ].filter(Boolean).length;
 
   return (
     <main
@@ -133,6 +182,32 @@ export default function AulaDia1Page() {
         </p>
 
         <section style={cardStyle}>
+          <h2>Progresso da aula</h2>
+          <p style={mutedStyle}>
+            Você concluiu {completedSteps} de 2 passos desta aula.
+          </p>
+
+          <div
+            style={{
+              height: "16px",
+              background: "rgba(255,255,255,0.08)",
+              borderRadius: "999px",
+              overflow: "hidden",
+              marginTop: "16px",
+            }}
+          >
+            <div
+              style={{
+                width: `${(completedSteps / 2) * 100}%`,
+                height: "100%",
+                background: "#22d3ee",
+                borderRadius: "999px",
+              }}
+            />
+          </div>
+        </section>
+
+        <section style={cardStyle}>
           <h2>Objetivo da aula</h2>
           <p style={mutedStyle}>
             Entender como a trilha funciona, como você vai evoluir por missões
@@ -171,7 +246,7 @@ export default function AulaDia1Page() {
               return (
                 <button
                   key={option.id}
-                  onClick={() => setSelectedOption(option.id)}
+                  onClick={() => handleSelectOption(option.id)}
                   style={{
                     ...buttonStyle,
                     border: isSelected
