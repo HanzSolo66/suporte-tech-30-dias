@@ -1,33 +1,39 @@
-const weeklyMissions = [
-  {
-    day: "Dia 1",
-    title: "Boas-vindas e avaliação inicial",
-    status: "Concluído",
-  },
-  {
-    day: "Dia 2",
-    title: "O que é lógica de programação",
-    status: "Próxima missão",
-  },
-  {
-    day: "Dia 3",
-    title: "Variáveis no mundo real",
-    status: "Bloqueado",
-  },
-  {
-    day: "Dia 4",
-    title: "Condições: se acontecer isso, faça aquilo",
-    status: "Bloqueado",
-  },
-];
+"use client";
 
-const badges = [
-  "Primeira Aula",
-  "Primeiro Quiz",
-  "Iniciante Tech",
-];
+import { useEffect, useState } from "react";
+
+const progressKey = "suporte-tech-progress";
+
+type ProgressData = {
+  day1QuizCompleted: boolean;
+  day1AlexUsed: boolean;
+};
+
+const initialProgress: ProgressData = {
+  day1QuizCompleted: false,
+  day1AlexUsed: false,
+};
 
 export default function DashboardPage() {
+  const [progress, setProgress] = useState<ProgressData>(initialProgress);
+
+  useEffect(() => {
+    const savedProgress = window.localStorage.getItem(progressKey);
+
+    if (savedProgress) {
+      setProgress(JSON.parse(savedProgress));
+    }
+  }, []);
+
+  const completedSteps = [
+    progress.day1QuizCompleted,
+    progress.day1AlexUsed,
+  ].filter(Boolean).length;
+
+  const day1Completed = completedSteps === 2;
+  const xp = completedSteps * 60;
+  const currentDay = day1Completed ? 2 : 1;
+
   return (
     <main
       style={{
@@ -38,34 +44,24 @@ export default function DashboardPage() {
         padding: "40px",
       }}
     >
-      <section style={{ maxWidth: "1180px", margin: "0 auto" }}>
-        <header
+      <section style={{ maxWidth: "1140px", margin: "0 auto" }}>
+        <p style={eyebrowStyle}>Painel do aluno</p>
+
+        <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             gap: "24px",
-            alignItems: "center",
-            marginBottom: "40px",
+            alignItems: "flex-start",
+            flexWrap: "wrap",
           }}
         >
           <div>
-            <p
-              style={{
-                color: "#22d3ee",
-                fontWeight: 800,
-                letterSpacing: "0.22em",
-                textTransform: "uppercase",
-                marginBottom: "12px",
-              }}
-            >
-              Painel do aluno
-            </p>
-
             <h1
               style={{
                 fontSize: "48px",
                 lineHeight: 1.1,
-                margin: 0,
+                margin: "12px 0",
               }}
             >
               Bem-vindo à sua missão, Matheus.
@@ -74,10 +70,9 @@ export default function DashboardPage() {
             <p
               style={{
                 color: "#cbd5e1",
-                fontSize: "18px",
+                fontSize: "20px",
                 lineHeight: 1.7,
-                maxWidth: "720px",
-                marginTop: "16px",
+                maxWidth: "760px",
               }}
             >
               Continue sua jornada para dominar tecnologia aplicada ao
@@ -88,10 +83,10 @@ export default function DashboardPage() {
           <a
             href="/"
             style={{
-              color: "#020617",
               background: "#22d3ee",
+              color: "#020617",
               textDecoration: "none",
-              padding: "14px 20px",
+              padding: "16px 24px",
               borderRadius: "16px",
               fontWeight: 900,
               whiteSpace: "nowrap",
@@ -99,133 +94,128 @@ export default function DashboardPage() {
           >
             Voltar para home
           </a>
-        </header>
+        </div>
 
         <section
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
             gap: "20px",
+            marginTop: "40px",
           }}
         >
-          <MetricCard label="Progresso" value="1/30" description="Dia atual da trilha" />
-          <MetricCard label="XP" value="120" description="Pontos acumulados" />
-          <MetricCard label="Sequência" value="1 dia" description="Continue estudando diariamente" />
-          <MetricCard label="Nível" value="Iniciante" description="Primeira fase desbloqueada" />
+          <InfoCard
+            label="Progresso"
+            value={`${day1Completed ? 1 : 0}/30`}
+            description={
+              day1Completed
+                ? "Dia 1 concluído"
+                : "Conclua o quiz e use o Alex"
+            }
+          />
+
+          <InfoCard
+            label="XP"
+            value={String(xp)}
+            description="Pontos acumulados"
+          />
+
+          <InfoCard
+            label="Sequência"
+            value={day1Completed ? "1 dia" : "0 dias"}
+            description={
+              day1Completed
+                ? "Continue estudando diariamente"
+                : "Finalize o primeiro dia"
+            }
+          />
+
+          <InfoCard
+            label="Nível"
+            value={day1Completed ? "Iniciante+" : "Iniciante"}
+            description={
+              day1Completed
+                ? "Primeira missão concluída"
+                : "Primeira fase desbloqueada"
+            }
+          />
         </section>
 
         <section
           style={{
-            marginTop: "28px",
             display: "grid",
-            gridTemplateColumns: "minmax(0, 1.4fr) minmax(280px, 0.8fr)",
+            gridTemplateColumns: "minmax(0, 1.5fr) minmax(280px, 1fr)",
             gap: "24px",
+            marginTop: "32px",
           }}
         >
-          <div style={cardStyle}>
+          <section style={cardStyle}>
             <div
               style={{
                 display: "flex",
                 justifyContent: "space-between",
                 gap: "16px",
                 alignItems: "center",
-                marginBottom: "22px",
+                flexWrap: "wrap",
               }}
             >
               <div>
-                <p style={labelStyle}>Semana 1</p>
-                <h2 style={{ fontSize: "30px", margin: "8px 0 0" }}>
+                <p style={eyebrowStyle}>Semana 1</p>
+                <h2 style={{ fontSize: "32px", marginTop: "8px" }}>
                   Missões da semana
                 </h2>
               </div>
 
               <span
                 style={{
-                  border: "1px solid rgba(34,211,238,0.4)",
                   color: "#67e8f9",
-                  padding: "8px 12px",
+                  border: "1px solid rgba(34,211,238,0.45)",
                   borderRadius: "999px",
+                  padding: "10px 16px",
                   fontWeight: 800,
-                  fontSize: "14px",
                 }}
               >
                 Base e confiança
               </span>
             </div>
 
-            <div style={{ display: "grid", gap: "12px" }}>
-              {weeklyMissions.map((mission) => (
-                <div
-                  key={mission.day}
-                  style={{
-                    padding: "18px",
-                    borderRadius: "18px",
-                    background:
-                      mission.status === "Concluído"
-                        ? "rgba(34,197,94,0.12)"
-                        : "rgba(255,255,255,0.05)",
-                    border:
-                      mission.status === "Próxima missão"
-                        ? "1px solid rgba(34,211,238,0.45)"
-                        : "1px solid rgba(255,255,255,0.1)",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    gap: "16px",
-                    alignItems: "center",
-                  }}
-                >
-                  <div>
-                    <p style={{ ...labelStyle, marginBottom: "6px" }}>
-                      {mission.day}
-                    </p>
-                    <strong>{mission.title}</strong>
-                  </div>
+            <div style={{ display: "grid", gap: "14px", marginTop: "24px" }}>
+              <MissionCard
+                day="Dia 1"
+                title="Boas-vindas e avaliação inicial"
+                status={day1Completed ? "Concluído" : "Em andamento"}
+                href="/aulas/dia-1"
+                completed={day1Completed}
+              />
 
-                  <span
-                    style={{
-                      color:
-                        mission.status === "Concluído"
-                          ? "#86efac"
-                          : mission.status === "Próxima missão"
-                          ? "#67e8f9"
-                          : "#94a3b8",
-                      fontWeight: 800,
-                      fontSize: "14px",
-                    }}
-                  >
-                    {mission.status}
-                  </span>
-                </div>
-              ))}
+              <MissionCard
+                day="Dia 2"
+                title="O que é lógica de programação"
+                status={day1Completed ? "Próxima missão" : "Bloqueado"}
+                href={day1Completed ? "/aulas/dia-2" : "/dashboard"}
+                completed={false}
+              />
+
+              <MissionCard
+                day="Dia 3"
+                title="Condições e decisões"
+                status="Em breve"
+                href="/dashboard"
+                completed={false}
+              />
             </div>
+          </section>
 
-            <button
-              style={{
-                marginTop: "24px",
-                width: "100%",
-                padding: "16px",
-                borderRadius: "16px",
-                border: "none",
-                background: "#22d3ee",
-                color: "#020617",
-                fontWeight: 900,
-                cursor: "pointer",
-                fontSize: "16px",
-              }}
-            >
-              Continuar aula
-            </button>
-          </div>
+          <section style={cardStyle}>
+            <p style={eyebrowStyle}>Mentor IA</p>
 
-          <aside style={cardStyle}>
-            <p style={labelStyle}>Mentor IA</p>
-            <h2 style={{ fontSize: "30px", margin: "8px 0 12px" }}>
+            <h2 style={{ fontSize: "32px", marginTop: "8px" }}>
               Assistente Alex
             </h2>
 
-            <p style={{ ...mutedStyle, lineHeight: 1.7 }}>
-              Está com dificuldade? O Alex pode explicar de forma simples,
-              sugerir revisão e ajudar você a continuar sem travar.
+            <p style={mutedStyle}>
+              O Alex acompanha seu progresso e ajuda quando você trava em algum
+              conceito.
             </p>
 
             <div
@@ -238,101 +228,37 @@ export default function DashboardPage() {
               }}
             >
               <strong>Dica do Alex</strong>
-              <p style={{ ...mutedStyle, lineHeight: 1.6, marginBottom: 0 }}>
-                Hoje foque em entender lógica antes de se preocupar em decorar
-                código.
+
+              <p style={{ ...mutedStyle, marginBottom: 0 }}>
+                {day1Completed
+                  ? "Você concluiu a primeira missão. Agora está pronto para avançar para lógica de programação."
+                  : "Comece pela aula do Dia 1. Responda o quiz e registre sua dúvida para ganhar XP."}
               </p>
             </div>
 
-            <button
+            <a
+              href="/aulas/dia-1"
               style={{
+                display: "inline-block",
                 marginTop: "24px",
-                width: "100%",
-                padding: "16px",
+                background: "#22d3ee",
+                color: "#020617",
+                textDecoration: "none",
+                padding: "14px 20px",
                 borderRadius: "16px",
-                border: "1px solid rgba(255,255,255,0.16)",
-                background: "rgba(255,255,255,0.06)",
-                color: "white",
                 fontWeight: 900,
-                cursor: "pointer",
-                fontSize: "16px",
               }}
             >
-              Tirar dúvida
-            </button>
-          </aside>
-        </section>
-
-        <section
-          style={{
-            marginTop: "28px",
-            display: "grid",
-            gridTemplateColumns: "minmax(0, 1fr) minmax(280px, 0.7fr)",
-            gap: "24px",
-          }}
-        >
-          <div style={cardStyle}>
-            <p style={labelStyle}>Progresso visual</p>
-            <h2 style={{ fontSize: "30px", margin: "8px 0 18px" }}>
-              Trilha dos 30 dias
-            </h2>
-
-            <div
-              style={{
-                height: "18px",
-                background: "rgba(255,255,255,0.08)",
-                borderRadius: "999px",
-                overflow: "hidden",
-              }}
-            >
-              <div
-                style={{
-                  width: "8%",
-                  height: "100%",
-                  background: "#22d3ee",
-                  borderRadius: "999px",
-                }}
-              />
-            </div>
-
-            <p style={{ ...mutedStyle, marginTop: "14px" }}>
-              Você está no começo da jornada. Pequenas vitórias todos os dias
-              constroem consistência.
-            </p>
-          </div>
-
-          <div style={cardStyle}>
-            <p style={labelStyle}>Conquistas</p>
-            <h2 style={{ fontSize: "30px", margin: "8px 0 18px" }}>
-              Badges
-            </h2>
-
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-              {badges.map((badge) => (
-                <span
-                  key={badge}
-                  style={{
-                    padding: "10px 12px",
-                    borderRadius: "999px",
-                    background: "rgba(255,255,255,0.08)",
-                    border: "1px solid rgba(255,255,255,0.12)",
-                    color: "#e2e8f0",
-                    fontWeight: 800,
-                    fontSize: "14px",
-                  }}
-                >
-                  🏅 {badge}
-                </span>
-              ))}
-            </div>
-          </div>
+              Ir para a aula atual
+            </a>
+          </section>
         </section>
       </section>
     </main>
   );
 }
 
-function MetricCard({
+function InfoCard({
   label,
   value,
   description,
@@ -343,31 +269,89 @@ function MetricCard({
 }) {
   return (
     <div style={cardStyle}>
-      <p style={labelStyle}>{label}</p>
-      <h2 style={numberStyle}>{value}</h2>
-      <p style={mutedStyle}>{description}</p>
+      <p style={eyebrowStyle}>{label}</p>
+      <strong style={{ fontSize: "38px", display: "block", marginTop: "8px" }}>
+        {value}
+      </strong>
+      <p style={{ ...mutedStyle, marginBottom: 0 }}>{description}</p>
     </div>
   );
 }
 
+function MissionCard({
+  day,
+  title,
+  status,
+  href,
+  completed,
+}: {
+  day: string;
+  title: string;
+  status: string;
+  href: string;
+  completed: boolean;
+}) {
+  return (
+    <a
+      href={href}
+      style={{
+        display: "block",
+        textDecoration: "none",
+        color: "white",
+        padding: "20px",
+        borderRadius: "18px",
+        background: completed
+          ? "rgba(34,197,94,0.14)"
+          : "rgba(255,255,255,0.05)",
+        border: completed
+          ? "1px solid rgba(34,197,94,0.35)"
+          : "1px solid rgba(255,255,255,0.12)",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "16px",
+          alignItems: "center",
+          flexWrap: "wrap",
+        }}
+      >
+        <div>
+          <p style={{ ...eyebrowStyle, margin: 0 }}>{day}</p>
+          <strong style={{ fontSize: "18px" }}>{title}</strong>
+        </div>
+
+        <span
+          style={{
+            color: completed ? "#86efac" : "#67e8f9",
+            fontWeight: 900,
+          }}
+        >
+          {status}
+        </span>
+      </div>
+    </a>
+  );
+}
+
 const cardStyle: React.CSSProperties = {
-  background: "rgba(255,255,255,0.06)",
+  padding: "24px",
   border: "1px solid rgba(255,255,255,0.12)",
   borderRadius: "24px",
-  padding: "24px",
+  background: "rgba(255,255,255,0.06)",
 };
 
-const labelStyle: React.CSSProperties = {
+const eyebrowStyle: React.CSSProperties = {
   color: "#22d3ee",
-  fontWeight: 800,
+  fontWeight: 900,
+  textTransform: "uppercase",
+  letterSpacing: "0.16em",
   margin: 0,
-};
-
-const numberStyle: React.CSSProperties = {
-  fontSize: "36px",
-  margin: "12px 0",
 };
 
 const mutedStyle: React.CSSProperties = {
   color: "#cbd5e1",
+  lineHeight: 1.7,
+  fontSize: "16px",
 };
