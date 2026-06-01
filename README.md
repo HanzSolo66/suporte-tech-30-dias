@@ -1,95 +1,61 @@
 # Suporte Tech 30 Dias
 
-![Banner](https://via.placeholder.com/1200x400?text=Suporte+Tech+30+Dias)
+Uma aplicação web gamificada para estudar tecnologia aplicada ao atendimento ao público, suporte técnico e melhoria de processos.
 
-Uma plataforma gamificada de aprendizado para pessoas em transição de carreira que desejam entrar na área de Atendimento ao Cliente, Customer Support, Help Desk, Service Desk ou Suporte Técnico. O usuário inicia completamente do zero e em 30 dias aprende tecnologia aplicada ao atendimento e suporte.
-
-## 🎯 Objetivo do Produto
-
-Criar uma experiência de aprendizado que não pareça um curso tradicional ou uma faculdade, mas sim um jogo. O foco é proporcionar evolução constante, pequenas vitórias, progresso diário e acompanhamento personalizado através de:
-
-- Curso estruturado em 30 dias (4 semanas)
-- Quizzes interativos com feedback imediato
-- Assistente de dúvidas com IA (Anthropic Claude)
-- Sistema de progresso e gamificação (XP, níveis, badges, streak)
-- Recomendações de conteúdo adaptativas
-
-## 🚀 Trilha de Estudos (30 Dias)
-
-- **Semana 1: Fundamentos** - Lógica, variáveis, operadores, condições e loops. Entender como o computador pensa.
-- **Semana 2: Python Básico** - Strings, números, listas, funções. Escrever pequenos programas.
-- **Semana 3: SQL e Banco de Dados** - Tabelas, SELECT, WHERE, JOINs básicos. Compreender armazenamento de dados.
-- **Semana 4: APIs e Automação** - Requisições, integrações, automações simples. Conectar sistemas.
-
-## 🛠️ Stack Tecnológica
-
-O projeto é um monorepo que utiliza as seguintes tecnologias:
-
-### Frontend
-- **Framework:** Next.js (React)
-- **Linguagem:** TypeScript
-- **Estilização:** Tailwind CSS
-- **Componentes:** Shadcn UI
-
-### Backend
-- **Framework:** NestJS
-- **Linguagem:** TypeScript
-- **Banco de Dados:** PostgreSQL
-- **ORM:** Prisma
-- **Autenticação:** NextAuth
-
-### IA & Infraestrutura
-- **Inteligência Artificial:** Anthropic Claude API
-- **Deploy:** Vercel (Frontend) / Railway ou Supabase (Backend/DB)
-
-## 📁 Estrutura do Repositório
-
-```text
-suporte-tech-30-dias/
-│
-├── apps/
-│   ├── web/                # Frontend em Next.js
-│   └── api/                # Backend em NestJS
-│
-├── packages/               # Pacotes compartilhados (monorepo)
-│   ├── types/
-│   ├── utils/
-│   ├── ui/
-│   └── config/
-│
-├── docs/                   # Documentação do projeto
-│   ├── architecture/
-│   ├── api/
-│   ├── database/
-│   ├── wireframes/
-│   └── sprints/
-│
-├── database/               # Scripts e schemas do banco de dados
-│   ├── migrations/
-│   ├── seeds/
-│   └── schema/
-│
-├── quizzes/                # Dados e lógicas dos quizzes por semana
-│
-├── content/                # Conteúdo das aulas (vídeos, PDFs, links)
-│
-└── ai-assistant/           # Prompts e configurações do assistente IA
-```
-
-## 🌐 Versão Online (GitHub Pages)
-
-Este projeto está configurado para rodar como uma aplicação estática no GitHub Pages. 
-O progresso é salvo localmente no seu navegador (LocalStorage).
-
-**Acesse aqui:** [https://HanzSolo66.github.io/suporte-tech-30-dias/](https://HanzSolo66.github.io/suporte-tech-30-dias/)
-
-## 📄 Documentação
-
-Para mais detalhes sobre o projeto, consulte a pasta `docs/`:
-- [Visão do Produto (Product Vision)](docs/PRODUCT_VISION.md)
-- [Roadmap e Sprints](docs/ROADMAP.md)
-- [Backlog MVP e User Stories](docs/BACKLOG.md)
-- [Arquitetura e Banco de Dados](docs/architecture/ARCHITECTURE.md)
+O projeto foi criado para ajudar pessoas em transição de carreira a começarem do zero, com uma trilha de 30 dias que combina lógica de programação, Python básico, dados, SQL, APIs, automações e projetos práticos.
 
 ---
-Desenvolvido com 🩵 para transformar carreiras.
+
+## Objetivo do projeto
+
+O objetivo do **Suporte Tech 30 Dias** é transformar o aprendizado técnico em uma experiência simples, guiada e motivadora.
+
+A aplicação simula uma trilha de estudos em formato de missões, com:
+
+- aulas organizadas por dia;
+- quizzes interativos;
+- feedback automático;
+- explicação de erros;
+- progresso salvo no navegador;
+- desbloqueio gradual de aulas;
+- Assistente Alex para dúvidas;
+- certificado final;
+- texto de apoio para portfólio ou LinkedIn.
+
+---
+
+## Público-alvo
+
+Este projeto foi pensado para pessoas que:
+
+- estão em transição de carreira para tecnologia;
+- têm experiência com atendimento, suporte, vendas, financeiro ou relacionamento com clientes;
+- querem aprender tecnologia do zero;
+- gostam de resolver problemas e melhorar processos;
+- desejam criar um primeiro projeto para portfólio.
+
+---
+
+## Funcionalidades
+
+### Página inicial
+
+Apresenta a proposta da trilha e os principais pilares do projeto.
+
+### Dashboard gamificado
+
+O painel do aluno mostra:
+
+- progresso geral;
+- XP acumulado;
+- status da trilha;
+- aulas concluídas;
+- próxima missão;
+- acesso ao certificado quando a trilha é concluída.
+
+### Aulas dinâmicas
+
+As aulas são carregadas a partir de um arquivo central:
+
+```text
+apps/web/lib/lessons.ts
