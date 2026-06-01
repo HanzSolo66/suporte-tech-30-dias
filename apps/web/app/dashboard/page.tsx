@@ -1,17 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { lessons } from "../../lib/lessons";
 
-const progressKey = "suporte-tech-progress";
+const progressKey = "suporte-tech-progress-v2";
 
 type ProgressData = {
-  day1QuizCompleted: boolean;
-  day1AlexUsed: boolean;
+  completedLessons: string[];
+  alexUsedLessons: string[];
 };
 
 const initialProgress: ProgressData = {
-  day1QuizCompleted: false,
-  day1AlexUsed: false,
+  completedLessons: [],
+  alexUsedLessons: [],
 };
 
 export default function DashboardPage() {
@@ -25,14 +26,16 @@ export default function DashboardPage() {
     }
   }, []);
 
-  const completedSteps = [
-    progress.day1QuizCompleted,
-    progress.day1AlexUsed,
-  ].filter(Boolean).length;
+  const completedDays = progress.completedLessons.length;
+  const xp = completedDays * 120 + progress.alexUsedLessons.length * 30;
 
-  const day1Completed = completedSteps === 2;
-  const xp = completedSteps * 60;
-  const currentDay = day1Completed ? 2 : 1;
+  const currentLesson =
+    lessons.find((lesson) => !progress.completedLessons.includes(lesson.slug)) ||
+    lessons[lessons.length - 1];
+
+  const currentLessonIndex = lessons.findIndex(
+    (lesson) => lesson.slug === currentLesson.slug
+  );
 
   return (
     <main
@@ -106,11 +109,11 @@ export default function DashboardPage() {
         >
           <InfoCard
             label="Progresso"
-            value={`${day1Completed ? 1 : 0}/30`}
+            value={`${completedDays}/${lessons.length}`}
             description={
-              day1Completed
-                ? "Dia 1 concluído"
-                : "Conclua o quiz e use o Alex"
+              completedDays > 0
+                ? `${completedDays} aula(s) concluída(s)`
+                : "Comece pela primeira aula"
             }
           />
 
@@ -122,9 +125,9 @@ export default function DashboardPage() {
 
           <InfoCard
             label="Sequência"
-            value={day1Completed ? "1 dia" : "0 dias"}
+            value={completedDays > 0 ? `${completedDays} dia(s)` : "0 dias"}
             description={
-              day1Completed
+              completedDays > 0
                 ? "Continue estudando diariamente"
                 : "Finalize o primeiro dia"
             }
@@ -132,9 +135,17 @@ export default function DashboardPage() {
 
           <InfoCard
             label="Nível"
-            value={day1Completed ? "Iniciante+" : "Iniciante"}
+            value={
+              completedDays >= 3
+                ? "Aprendiz"
+                : completedDays >= 1
+                ? "Iniciante+"
+                : "Iniciante"
+            }
             description={
-              day1Completed
+              completedDays >= 3
+                ? "Você concluiu a primeira sequência"
+                : completedDays >= 1
                 ? "Primeira missão concluída"
                 : "Primeira fase desbloqueada"
             }
@@ -180,29 +191,35 @@ export default function DashboardPage() {
             </div>
 
             <div style={{ display: "grid", gap: "14px", marginTop: "24px" }}>
-              <MissionCard
-                day="Dia 1"
-                title="Boas-vindas e avaliação inicial"
-                status={day1Completed ? "Concluído" : "Em andamento"}
-                href="/aulas/dia-1"
-                completed={day1Completed}
-              />
+              {lessons.map((lesson, index) => {
+                const completed = progress.completedLessons.includes(
+                  lesson.slug
+                );
 
-              <MissionCard
-                day="Dia 2"
-                title="O que é lógica de programação"
-                status={day1Completed ? "Próxima missão" : "Bloqueado"}
-                href={day1Completed ? "/aulas/dia-2" : "/dashboard"}
-                completed={false}
-              />
+                const previousLesson = lessons[index - 1];
 
-              <MissionCard
-                day="Dia 3"
-                title="Condições e decisões"
-                status="Em breve"
-                href="/dashboard"
-                completed={false}
-              />
+                const unlocked =
+                  index === 0 ||
+                  progress.completedLessons.includes(previousLesson.slug);
+
+                return (
+                  <MissionCard
+                    key={lesson.slug}
+                    day={`Dia ${lesson.dayNumber}`}
+                    title={lesson.title}
+                    status={
+                      completed
+                        ? "Concluído"
+                        : unlocked
+                        ? "Disponível"
+                        : "Bloqueado"
+                    }
+                    href={unlocked ? `/aulas/${lesson.slug}` : "/dashboard"}
+                    completed={completed}
+                    locked={!unlocked}
+                  />
+                );
+              })}
             </div>
           </section>
 
@@ -230,14 +247,14 @@ export default function DashboardPage() {
               <strong>Dica do Alex</strong>
 
               <p style={{ ...mutedStyle, marginBottom: 0 }}>
-                {day1Completed
-                  ? "Você concluiu a primeira missão. Agora está pronto para avançar para lógica de programação."
-                  : "Comece pela aula do Dia 1. Responda o quiz e registre sua dúvida para ganhar XP."}
+                {completedDays === lessons.length
+                  ? "Você concluiu todas as aulas disponíveis. Excelente progresso!"
+                  : `Sua aula atual é o Dia ${currentLesson.dayNumber}: ${currentLesson.title}.`}
               </p>
             </div>
 
             <a
-              href="/aulas/dia-1"
+              href={`/aulas/${currentLesson.slug}`}
               style={{
                 display: "inline-block",
                 marginTop: "24px",
@@ -251,6 +268,24 @@ export default function DashboardPage() {
             >
               Ir para a aula atual
             </a>
+
+            <div
+              style={{
+                marginTop: "24px",
+                padding: "18px",
+                borderRadius: "18px",
+                background: "rgba(255,255,255,0.05)",
+                border: "1px solid rgba(255,255,255,0.1)",
+              }}
+            >
+              <strong>Próximo passo</strong>
+
+              <p style={{ ...mutedStyle, marginBottom: 0 }}>
+                {currentLessonIndex + 1 < lessons.length
+                  ? "Conclua a aula atual para liberar a próxima missão."
+                  : "Você chegou ao fim das aulas cadastradas nesta versão."}
+              </p>
+            </div>
           </section>
         </section>
       </section>
@@ -284,12 +319,14 @@ function MissionCard({
   status,
   href,
   completed,
+  locked,
 }: {
   day: string;
   title: string;
   status: string;
   href: string;
   completed: boolean;
+  locked: boolean;
 }) {
   return (
     <a
@@ -300,6 +337,7 @@ function MissionCard({
         color: "white",
         padding: "20px",
         borderRadius: "18px",
+        opacity: locked ? 0.55 : 1,
         background: completed
           ? "rgba(34,197,94,0.14)"
           : "rgba(255,255,255,0.05)",
@@ -324,7 +362,7 @@ function MissionCard({
 
         <span
           style={{
-            color: completed ? "#86efac" : "#67e8f9",
+            color: completed ? "#86efac" : locked ? "#94a3b8" : "#67e8f9",
             fontWeight: 900,
           }}
         >

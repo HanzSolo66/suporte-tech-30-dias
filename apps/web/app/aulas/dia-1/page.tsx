@@ -34,11 +34,13 @@ const progressKey = "suporte-tech-progress";
 type ProgressData = {
   day1QuizCompleted: boolean;
   day1AlexUsed: boolean;
+  day2QuizCompleted?: boolean;
 };
 
 const initialProgress: ProgressData = {
   day1QuizCompleted: false,
   day1AlexUsed: false,
+  day2QuizCompleted: false,
 };
 
 export default function AulaDia1Page() {
@@ -124,6 +126,8 @@ export default function AulaDia1Page() {
     progress.day1QuizCompleted,
     progress.day1AlexUsed,
   ].filter(Boolean).length;
+
+  const day1Completed = completedSteps === 2;
 
   return (
     <main
@@ -393,6 +397,40 @@ export default function AulaDia1Page() {
               <p style={{ ...mutedStyle, marginBottom: 0 }}>
                 {alexResponse}
               </p>
+            </div>
+          )}
+
+          {day1Completed && (
+            <div
+              style={{
+                marginTop: "24px",
+                padding: "20px",
+                borderRadius: "18px",
+                background: "rgba(34,197,94,0.12)",
+                border: "1px solid rgba(34,197,94,0.35)",
+              }}
+            >
+              <strong>Dia 1 concluído 🎉</strong>
+
+              <p style={{ ...mutedStyle, marginBottom: "16px" }}>
+                Você concluiu o quiz e usou o Assistente Alex. Agora a próxima
+                aula está liberada.
+              </p>
+
+              <a
+                href="/aulas/dia-2"
+                style={{
+                  display: "inline-block",
+                  background: "#22d3ee",
+                  color: "#020617",
+                  textDecoration: "none",
+                  padding: "14px 20px",
+                  borderRadius: "16px",
+                  fontWeight: 900,
+                }}
+              >
+                Ir para o Dia 2
+              </a>
             </div>
           )}
         </section>
