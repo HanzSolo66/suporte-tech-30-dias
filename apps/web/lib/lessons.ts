@@ -458,6 +458,426 @@ export const lessons: Lesson[] = [
     closing:
       "Você concluiu a primeira semana de base lógica. Agora está pronto para começar a aplicar isso com Python.",
   },
+  {
+    slug: "dia-8",
+    dayNumber: 8,
+    title: "Primeiros passos com Python",
+    description:
+      "Hoje você vai conhecer Python como uma linguagem simples para começar a transformar lógica em código.",
+    objective:
+      "Entender para que serve Python e por que ele é uma boa linguagem para iniciar na tecnologia.",
+    summary:
+      "Python é uma linguagem de programação muito usada por ser clara, legível e versátil. Ela pode ser usada para automações, análise de dados, APIs, scripts e ferramentas internas.",
+    concepts: [
+      {
+        title: "Python",
+        text: "Uma linguagem de programação conhecida por ser amigável para iniciantes e poderosa para projetos reais.",
+      },
+      {
+        title: "Código",
+        text: "Conjunto de instruções que damos ao computador para executar uma tarefa.",
+      },
+      {
+        title: "Script",
+        text: "Um pequeno programa criado para automatizar ou resolver uma tarefa específica.",
+      },
+    ],
+    quiz: {
+      title: "Por que Python é uma boa escolha para começar?",
+      options: [
+        {
+          id: "a",
+          text: "Porque é uma linguagem clara e muito usada em projetos reais",
+          isCorrect: true,
+          explanation:
+            "Correto. Python é bastante usado e costuma ser mais legível para quem está começando.",
+        },
+        {
+          id: "b",
+          text: "Porque não exige lógica nenhuma",
+          isCorrect: false,
+          explanation:
+            "Não. Python facilita a escrita, mas você ainda precisa usar lógica para resolver problemas.",
+        },
+        {
+          id: "c",
+          text: "Porque serve apenas para criar jogos",
+          isCorrect: false,
+          explanation:
+            "Não. Python pode ser usado em várias áreas, como automação, dados, APIs e ferramentas internas.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["python", "linguagem", "começar", "comecar"],
+        response:
+          "Python é uma ótima primeira linguagem porque o código costuma parecer mais próximo do português/inglês comum. Isso ajuda você a focar na lógica antes de se preocupar com sintaxes muito complexas.",
+      },
+    ],
+    closing:
+      "Você conheceu Python e entendeu por que ele é uma boa porta de entrada para transformar lógica em soluções reais.",
+  },
+  {
+    slug: "dia-9",
+    dayNumber: 9,
+    title: "Variáveis em Python",
+    description:
+      "Hoje você vai ver como guardar informações em Python usando variáveis simples.",
+    objective:
+      "Aprender a criar variáveis em Python para armazenar textos, números e status.",
+    summary:
+      "Em Python, criamos variáveis usando um nome, o sinal de igual e um valor. Exemplo: cliente = 'Ana'. Isso permite reutilizar informações no código.",
+    concepts: [
+      {
+        title: "Atribuição",
+        text: "É o ato de colocar um valor dentro de uma variável usando o sinal de igual.",
+      },
+      {
+        title: "Nome de variável",
+        text: "Deve representar bem a informação guardada, como nomeCliente ou statusChamado.",
+      },
+      {
+        title: "Valor",
+        text: "É a informação armazenada, como um texto, número ou verdadeiro/falso.",
+      },
+    ],
+    quiz: {
+      title: "Qual exemplo cria uma variável em Python?",
+      options: [
+        {
+          id: "a",
+          text: "status_chamado = 'aberto'",
+          isCorrect: true,
+          explanation:
+            "Correto. Esse exemplo cria uma variável chamada status_chamado com o valor 'aberto'.",
+        },
+        {
+          id: "b",
+          text: "abrir computador agora",
+          isCorrect: false,
+          explanation:
+            "Isso é uma frase comum, não uma instrução válida de variável em Python.",
+        },
+        {
+          id: "c",
+          text: "variável sem nome",
+          isCorrect: false,
+          explanation:
+            "Uma variável precisa ter nome e normalmente recebe um valor.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["variável", "variavel", "python", "igual"],
+        response:
+          "Em Python, pense no sinal de igual como 'guarda isso aqui'. Exemplo: prioridade = 'alta' guarda o texto alta dentro da variável prioridade.",
+      },
+    ],
+    closing:
+      "Você aprendeu a criar variáveis em Python, uma habilidade essencial para qualquer automação ou sistema.",
+  },
+  {
+    slug: "dia-10",
+    dayNumber: 10,
+    title: "Condições em Python",
+    description:
+      "Hoje você vai transformar decisões em código usando if, else e exemplos de suporte.",
+    objective:
+      "Entender como escrever condições simples em Python.",
+    summary:
+      "Em Python, usamos if para testar uma condição e else para definir o que acontece quando a condição não é verdadeira.",
+    concepts: [
+      {
+        title: "if",
+        text: "Usado para verificar se uma condição é verdadeira.",
+      },
+      {
+        title: "else",
+        text: "Usado para indicar o caminho alternativo.",
+      },
+      {
+        title: "Indentação",
+        text: "Espaços no início da linha que mostram quais comandos pertencem ao bloco da condição.",
+      },
+    ],
+    quiz: {
+      title: "O que o if faz em Python?",
+      options: [
+        {
+          id: "a",
+          text: "Verifica uma condição para decidir o próximo passo",
+          isCorrect: true,
+          explanation:
+            "Correto. O if permite que o programa tome decisões.",
+        },
+        {
+          id: "b",
+          text: "Apaga automaticamente todos os dados",
+          isCorrect: false,
+          explanation:
+            "Não. O if não apaga dados por si só. Ele apenas avalia uma condição.",
+        },
+        {
+          id: "c",
+          text: "Serve apenas para mudar cor de tela",
+          isCorrect: false,
+          explanation:
+            "Não. O if é usado para decisões em vários tipos de programa.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["if", "else", "condição", "condicao", "python"],
+        response:
+          "Pense no if como uma pergunta: 'isso é verdadeiro?'. Se sim, executa um caminho. Se não, o else cuida do plano B.",
+      },
+    ],
+    closing:
+      "Você aprendeu a representar decisões em Python, conectando o raciocínio de atendimento com código.",
+  },
+  {
+    slug: "dia-11",
+    dayNumber: 11,
+    title: "Listas em Python",
+    description:
+      "Hoje você vai organizar vários dados em uma lista, como chamados, clientes ou categorias de atendimento.",
+    objective:
+      "Aprender o conceito de listas em Python e como elas ajudam a organizar informações.",
+    summary:
+      "Listas em Python armazenam vários valores em uma única variável. Elas são úteis quando precisamos trabalhar com muitos itens relacionados.",
+    concepts: [
+      {
+        title: "Lista",
+        text: "Estrutura usada para guardar vários valores juntos.",
+      },
+      {
+        title: "Índice",
+        text: "A posição de um item dentro da lista.",
+      },
+      {
+        title: "Adicionar item",
+        text: "Uma lista pode receber novos itens conforme o programa roda.",
+      },
+    ],
+    quiz: {
+      title: "Qual exemplo representa uma lista em Python?",
+      options: [
+        {
+          id: "a",
+          text: "chamados = ['aberto', 'em análise', 'resolvido']",
+          isCorrect: true,
+          explanation:
+            "Correto. Os colchetes indicam uma lista com vários itens.",
+        },
+        {
+          id: "b",
+          text: "chamado = 'aberto'",
+          isCorrect: false,
+          explanation:
+            "Isso é uma variável com um único texto, não uma lista.",
+        },
+        {
+          id: "c",
+          text: "if chamado aberto",
+          isCorrect: false,
+          explanation:
+            "Essa frase não representa uma lista válida em Python.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["lista", "listas", "python", "índice", "indice"],
+        response:
+          "Uma lista é como uma tabela simples de uma coluna. Você consegue guardar vários itens e depois olhar cada um deles quando precisar.",
+      },
+    ],
+    closing:
+      "Você aprendeu que listas permitem trabalhar com vários dados de uma vez, algo muito comum em suporte e automação.",
+  },
+  {
+    slug: "dia-12",
+    dayNumber: 12,
+    title: "Laços de repetição",
+    description:
+      "Hoje você vai entender como repetir uma ação várias vezes sem escrever o mesmo código repetidamente.",
+    objective:
+      "Aprender o conceito de repetição usando loops.",
+    summary:
+      "Laços de repetição servem para executar uma ação várias vezes. Em suporte, isso pode ser usado para percorrer uma lista de chamados, clientes ou mensagens.",
+    concepts: [
+      {
+        title: "Loop",
+        text: "Estrutura que repete uma ação enquanto houver itens ou enquanto uma condição for verdadeira.",
+      },
+      {
+        title: "for",
+        text: "Muito usado para percorrer listas item por item.",
+      },
+      {
+        title: "Repetição",
+        text: "Evita escrever a mesma instrução muitas vezes manualmente.",
+      },
+    ],
+    quiz: {
+      title: "Para que serve um loop?",
+      options: [
+        {
+          id: "a",
+          text: "Para repetir ações de forma automática",
+          isCorrect: true,
+          explanation:
+            "Correto. Loops ajudam a repetir ações sem duplicar código.",
+        },
+        {
+          id: "b",
+          text: "Para impedir que o código funcione",
+          isCorrect: false,
+          explanation:
+            "Não. Loops são úteis, mas precisam ser bem escritos para não causar problemas.",
+        },
+        {
+          id: "c",
+          text: "Para transformar texto em imagem",
+          isCorrect: false,
+          explanation:
+            "Não. Loop é sobre repetição de ações.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["loop", "for", "repetição", "repeticao"],
+        response:
+          "Imagine uma lista de chamados. Em vez de olhar um por um manualmente, o loop faz isso para você: pega o primeiro, depois o segundo, depois o terceiro, até acabar.",
+      },
+    ],
+    closing:
+      "Você aprendeu que loops ajudam a automatizar tarefas repetitivas, uma habilidade essencial para suporte técnico.",
+  },
+  {
+    slug: "dia-13",
+    dayNumber: 13,
+    title: "Funções",
+    description:
+      "Hoje você vai aprender a organizar código em blocos reutilizáveis chamados funções.",
+    objective:
+      "Entender o que é uma função e por que ela evita repetição no código.",
+    summary:
+      "Funções são blocos de código com nome. Elas permitem executar uma tarefa sempre que forem chamadas, deixando o código mais organizado.",
+    concepts: [
+      {
+        title: "Função",
+        text: "Bloco de código criado para executar uma tarefa específica.",
+      },
+      {
+        title: "Parâmetro",
+        text: "Informação que uma função pode receber para trabalhar.",
+      },
+      {
+        title: "Retorno",
+        text: "Resultado que uma função pode devolver depois de processar algo.",
+      },
+    ],
+    quiz: {
+      title: "Qual é a principal vantagem de usar funções?",
+      options: [
+        {
+          id: "a",
+          text: "Reutilizar uma lógica sem repetir o mesmo código várias vezes",
+          isCorrect: true,
+          explanation:
+            "Correto. Funções ajudam a reaproveitar código e organizar melhor o programa.",
+        },
+        {
+          id: "b",
+          text: "Esconder erros sem corrigir",
+          isCorrect: false,
+          explanation:
+            "Não. Funções não servem para esconder erros, e sim para organizar código.",
+        },
+        {
+          id: "c",
+          text: "Fazer o computador desligar sozinho",
+          isCorrect: false,
+          explanation:
+            "Não. Uma função pode executar várias tarefas, mas esse não é seu objetivo principal.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["função", "funcao", "parâmetro", "parametro", "retorno"],
+        response:
+          "Função é como um procedimento de atendimento. Você cria um passo a passo uma vez e pode repetir sempre que aquele tipo de situação acontecer.",
+      },
+    ],
+    closing:
+      "Você aprendeu que funções deixam o código mais organizado, reutilizável e fácil de manter.",
+  },
+  {
+    slug: "dia-14",
+    dayNumber: 14,
+    title: "Revisão de Python básico",
+    description:
+      "Hoje vamos revisar variáveis, condições, listas, loops e funções com foco em situações reais de suporte.",
+    objective:
+      "Consolidar a base de Python antes de avançar para dados e automações.",
+    summary:
+      "Nesta semana você começou a transformar lógica em código com Python. Aprendeu a guardar dados, tomar decisões, organizar listas, repetir ações e criar funções.",
+    concepts: [
+      {
+        title: "Variáveis",
+        text: "Guardam informações para uso posterior.",
+      },
+      {
+        title: "Condições",
+        text: "Permitem criar decisões no código.",
+      },
+      {
+        title: "Funções",
+        text: "Organizam tarefas em blocos reutilizáveis.",
+      },
+    ],
+    quiz: {
+      title: "Qual conjunto resume melhor o Python básico aprendido?",
+      options: [
+        {
+          id: "a",
+          text: "Variáveis, condições, listas, loops e funções",
+          isCorrect: true,
+          explanation:
+            "Correto. Esses conceitos formam uma boa base inicial em Python.",
+        },
+        {
+          id: "b",
+          text: "Apenas trocar a cor da tela",
+          isCorrect: false,
+          explanation:
+            "Não. Python básico envolve lógica, dados, decisões e organização de código.",
+        },
+        {
+          id: "c",
+          text: "Só copiar códigos prontos sem entender",
+          isCorrect: false,
+          explanation:
+            "Não. O objetivo é entender o raciocínio por trás do código.",
+        },
+      ],
+    },
+    alexHints: [
+      {
+        keywords: ["revisão", "revisao", "python", "semana"],
+        response:
+          "Revise Python pensando em tarefas de suporte: guardar dados do cliente, decidir o próximo passo, percorrer uma lista de chamados e criar funções para processos repetidos.",
+      },
+    ],
+    closing:
+      "Você concluiu a base inicial de Python. Agora já consegue entender a lógica por trás de muitas automações simples.",
+  },
 ];
 
 export function getLessonBySlug(slug: string) {
