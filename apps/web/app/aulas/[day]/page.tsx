@@ -7,6 +7,7 @@ import {
   getPreviousLesson,
 } from "../../../lib/lessons";
 import { neon } from "../../../lib/neonStyles";
+import { getVideoLinkBySlug } from "../../../lib/videoLinks";
 
 const progressKey = "suporte-tech-progress-v2";
 
@@ -68,6 +69,7 @@ export default function DynamicLessonPage({ params }: PageProps) {
   const currentLesson = lesson;
   const nextLesson = getNextLesson(currentLesson.slug);
   const previousLesson = getPreviousLesson(currentLesson.slug);
+  const videoLink = getVideoLinkBySlug(currentLesson.slug);
 
   const selectedAnswer = currentLesson.quiz.options.find(
     (option) => option.id === selectedOption
@@ -77,9 +79,7 @@ export default function DynamicLessonPage({ params }: PageProps) {
     currentLesson.slug
   );
 
-  const isAssistantUsed = progress.alexUsedLessons.includes(
-    currentLesson.slug
-  );
+  const isAssistantUsed = progress.alexUsedLessons.includes(currentLesson.slug);
 
   const isPreviousLessonCompleted =
     currentLesson.dayNumber === 1 ||
@@ -324,6 +324,39 @@ export default function DynamicLessonPage({ params }: PageProps) {
             </div>
           </div>
         </section>
+
+        {videoLink && (
+          <section
+            style={{
+              ...neon.cardGreen,
+              marginBottom: "26px",
+              display: "grid",
+              gridTemplateColumns: "minmax(0, 1fr) auto",
+              gap: "20px",
+              alignItems: "center",
+            }}
+          >
+            <div>
+              <p style={neon.eyebrow}>Vídeo de apoio</p>
+              <h2 style={{ fontSize: "30px", margin: "10px 0" }}>
+                {videoLink.title}
+              </h2>
+              <p style={{ ...neon.muted, marginBottom: 0 }}>
+                Abra uma busca dentro do canal Curso em Vídeo para reforçar o
+                tema desta aula.
+              </p>
+            </div>
+
+            <a
+              href={videoLink.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={neon.buttonSuccess}
+            >
+              Ver no YouTube
+            </a>
+          </section>
+        )}
 
         <section
           style={{
