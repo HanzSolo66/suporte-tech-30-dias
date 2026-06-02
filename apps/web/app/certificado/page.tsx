@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { lessons } from "../../lib/lessons";
+import { neon } from "../../lib/neonStyles";
 
 const progressKey = "suporte-tech-progress-v2";
 
@@ -34,7 +35,8 @@ export default function CertificadoPage() {
   const trailCompleted = completedLessons >= totalLessons;
   const xp = completedLessons * 120 + alexUses * 30;
 
-  const portfolioText = `Concluí a trilha Suporte Tech 30 Dias, um projeto prático focado em lógica de programação, Python básico, dados, SQL, APIs, automações e melhoria de processos de atendimento. Durante a jornada, desenvolvi uma aplicação web gamificada com aulas, quizzes, feedback automático, progresso local e assistente de dúvidas.`;
+  const portfolioText =
+    "Concluí a trilha Suporte Tech 30 Dias, um projeto prático focado em lógica de programação, Python básico, dados, SQL, APIs, automações e melhoria de processos de atendimento. Durante a jornada, desenvolvi uma aplicação web gamificada com aulas, quizzes, feedback automático, progresso local, Assistente Alex e certificado final.";
 
   function handleCopyPortfolioText() {
     navigator.clipboard.writeText(portfolioText);
@@ -46,112 +48,120 @@ export default function CertificadoPage() {
   }
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "#020617",
-        color: "white",
-        fontFamily: "Arial, Helvetica, sans-serif",
-        padding: "40px",
-      }}
-    >
-      <section style={{ maxWidth: "1040px", margin: "0 auto" }}>
-        <a
-          href="/dashboard"
+    <main style={neon.page}>
+      <section style={{ ...neon.container, maxWidth: "1080px" }}>
+        <header
           style={{
-            color: "#22d3ee",
-            fontWeight: 800,
-            textDecoration: "none",
+            display: "flex",
+            justifyContent: "space-between",
+            gap: "16px",
+            alignItems: "center",
+            flexWrap: "wrap",
+            marginBottom: "34px",
           }}
         >
-          ← Voltar para o dashboard
-        </a>
+          <a href="/dashboard" style={neon.buttonGhost}>
+            ← Dashboard
+          </a>
+
+          <a href="/" style={neon.buttonGhost}>
+            Home
+          </a>
+        </header>
 
         <section
           style={{
-            marginTop: "40px",
-            padding: "36px",
-            borderRadius: "32px",
-            background: trailCompleted
-              ? "linear-gradient(135deg, rgba(34,197,94,0.18), rgba(34,211,238,0.12))"
-              : "rgba(255,255,255,0.06)",
-            border: trailCompleted
-              ? "1px solid rgba(34,197,94,0.35)"
-              : "1px solid rgba(255,255,255,0.12)",
+            ...(trailCompleted ? neon.cardGreen : neon.card),
+            padding: "46px",
+            overflow: "hidden",
+            marginBottom: "26px",
           }}
         >
-          <p
-            style={{
-              color: "#22d3ee",
-              fontWeight: 900,
-              textTransform: "uppercase",
-              letterSpacing: "0.18em",
-              margin: 0,
-            }}
-          >
-            Certificado da trilha
-          </p>
-
-          <h1
-            style={{
-              fontSize: "52px",
-              lineHeight: 1.05,
-              marginTop: "16px",
-              marginBottom: "18px",
-            }}
-          >
-            {trailCompleted
-              ? "Parabéns, você concluiu a trilha!"
-              : "Sua trilha está em andamento"}
-          </h1>
-
-          <p
-            style={{
-              color: "#cbd5e1",
-              fontSize: "20px",
-              lineHeight: 1.7,
-              maxWidth: "820px",
-            }}
-          >
-            Você está construindo uma base prática em suporte com tecnologia,
-            passando por lógica, Python, dados, SQL, APIs, automação e projetos
-            aplicados ao atendimento.
-          </p>
-
           <div
             style={{
-              marginTop: "28px",
-              height: "18px",
-              background: "rgba(255,255,255,0.1)",
+              position: "absolute",
+              width: "360px",
+              height: "360px",
               borderRadius: "999px",
-              overflow: "hidden",
+              background: trailCompleted
+                ? "rgba(34,197,94,0.18)"
+                : "rgba(34,211,238,0.14)",
+              filter: "blur(58px)",
+              right: "-120px",
+              top: "-150px",
             }}
-          >
-            <div
-              style={{
-                width: `${progressPercent}%`,
-                height: "100%",
-                background: "#22d3ee",
-                borderRadius: "999px",
-              }}
-            />
-          </div>
+          />
 
-          <p style={{ color: "#cbd5e1", marginTop: "12px" }}>
-            {completedLessons} de {totalLessons} aulas concluídas —{" "}
-            {progressPercent}% da trilha.
-          </p>
+          <div style={{ position: "relative" }}>
+            <p style={neon.eyebrow}>
+              {trailCompleted
+                ? "Certificado desbloqueado"
+                : "Certificado da trilha"}
+            </p>
+
+            <h1
+              style={{
+                fontSize: "58px",
+                lineHeight: 1,
+                marginTop: "16px",
+                marginBottom: "18px",
+              }}
+            >
+              {trailCompleted ? (
+                <>
+                  Parabéns, missão{" "}
+                  <span style={{ color: neon.colors.green }}>concluída</span>.
+                </>
+              ) : (
+                <>
+                  Sua trilha ainda está{" "}
+                  <span style={{ color: neon.colors.cyan }}>em andamento</span>.
+                </>
+              )}
+            </h1>
+
+            <p
+              style={{
+                ...neon.muted,
+                fontSize: "20px",
+                maxWidth: "820px",
+              }}
+            >
+              Você construiu uma base prática em suporte com tecnologia,
+              passando por lógica, Python, dados, SQL, APIs, automação e
+              projetos aplicados ao atendimento.
+            </p>
+
+            <div style={{ marginTop: "28px" }}>
+              <div style={neon.progressTrack}>
+                <div
+                  style={{
+                    ...neon.progressFill,
+                    width: `${progressPercent}%`,
+                  }}
+                />
+              </div>
+
+              <p style={{ ...neon.muted, marginTop: "12px", marginBottom: 0 }}>
+                {completedLessons} de {totalLessons} aulas concluídas —{" "}
+                {progressPercent}% da trilha.
+              </p>
+            </div>
+          </div>
         </section>
 
         <section
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "20px",
-            marginTop: "28px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
+            gap: "16px",
+            marginBottom: "26px",
           }}
         >
-          <InfoCard label="Aulas concluídas" value={`${completedLessons}/${totalLessons}`} />
+          <InfoCard
+            label="Aulas concluídas"
+            value={`${completedLessons}/${totalLessons}`}
+          />
           <InfoCard label="XP total" value={String(xp)} />
           <InfoCard label="Uso do Alex" value={`${alexUses} vez(es)`} />
           <InfoCard
@@ -160,132 +170,135 @@ export default function CertificadoPage() {
           />
         </section>
 
-        <section style={cardStyle}>
-          <h2 style={{ fontSize: "32px", marginTop: 0 }}>
-            Habilidades praticadas
-          </h2>
+        <section
+          style={{
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 1fr) minmax(300px, 0.75fr)",
+            gap: "26px",
+            alignItems: "start",
+          }}
+        >
+          <section style={{ display: "grid", gap: "24px" }}>
+            <section style={neon.card}>
+              <p style={neon.eyebrow}>Habilidades praticadas</p>
 
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "12px",
-              marginTop: "18px",
-            }}
-          >
-            {[
-              "Atendimento com tecnologia",
-              "Lógica de programação",
-              "Python básico",
-              "Dados e SQL",
-              "APIs e integrações",
-              "Automação de processos",
-              "Projetos práticos",
-              "Portfólio",
-            ].map((skill) => (
-              <span
-                key={skill}
+              <h2 style={{ fontSize: "34px", margin: "10px 0 18px" }}>
+                Arsenal tech desbloqueado
+              </h2>
+
+              <div
                 style={{
-                  padding: "10px 14px",
-                  borderRadius: "999px",
-                  background: "rgba(34,211,238,0.1)",
-                  border: "1px solid rgba(34,211,238,0.25)",
-                  color: "#e2e8f0",
-                  fontWeight: 800,
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: "12px",
                 }}
               >
-                {skill}
-              </span>
-            ))}
-          </div>
-        </section>
+                {[
+                  "Atendimento com tecnologia",
+                  "Lógica de programação",
+                  "Python básico",
+                  "Dados e SQL",
+                  "APIs e integrações",
+                  "Automação de processos",
+                  "Projetos práticos",
+                  "Portfólio",
+                ].map((skill) => (
+                  <span
+                    key={skill}
+                    style={{
+                      padding: "11px 14px",
+                      borderRadius: "999px",
+                      background: "rgba(34,211,238,0.1)",
+                      border: "1px solid rgba(34,211,238,0.28)",
+                      color: neon.colors.text,
+                      fontWeight: 900,
+                    }}
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </section>
 
-        <section style={cardStyle}>
-          <h2 style={{ fontSize: "32px", marginTop: 0 }}>
-            Texto para portfólio ou LinkedIn
-          </h2>
+            <section style={neon.card}>
+              <p style={neon.eyebrow}>Texto para portfólio ou LinkedIn</p>
 
-          <p
-            style={{
-              color: "#cbd5e1",
-              lineHeight: 1.7,
-              fontSize: "17px",
-              background: "rgba(255,255,255,0.05)",
-              padding: "20px",
-              borderRadius: "18px",
-              border: "1px solid rgba(255,255,255,0.1)",
-            }}
-          >
-            {portfolioText}
-          </p>
+              <h2 style={{ fontSize: "34px", margin: "10px 0 18px" }}>
+                Apresente sua conquista
+              </h2>
 
-          <button
-            onClick={handleCopyPortfolioText}
-            style={{
-              marginTop: "16px",
-              padding: "14px 20px",
-              borderRadius: "16px",
-              border: "none",
-              background: "#22d3ee",
-              color: "#020617",
-              fontWeight: 900,
-              cursor: "pointer",
-              fontSize: "16px",
-            }}
-          >
-            {copied ? "Texto copiado!" : "Copiar texto"}
-          </button>
-        </section>
+              <p
+                style={{
+                  ...neon.muted,
+                  background: "rgba(255,255,255,0.055)",
+                  padding: "20px",
+                  borderRadius: "20px",
+                  border: "1px solid rgba(255,255,255,0.11)",
+                }}
+              >
+                {portfolioText}
+              </p>
 
-        <section style={cardStyle}>
-          <h2 style={{ fontSize: "32px", marginTop: 0 }}>Próximos passos</h2>
+              <button
+                onClick={handleCopyPortfolioText}
+                style={copied ? neon.buttonSuccess : neon.buttonPrimary}
+              >
+                {copied ? "Texto copiado!" : "Copiar texto"}
+              </button>
+            </section>
+          </section>
 
-          <ol
-            style={{
-              color: "#cbd5e1",
-              lineHeight: 1.8,
-              fontSize: "17px",
-              paddingLeft: "22px",
-            }}
-          >
-            <li>Melhorar o README do projeto no GitHub.</li>
-            <li>Adicionar prints da aplicação funcionando.</li>
-            <li>Publicar o projeto online.</li>
-            <li>Escrever um resumo da sua transição para tecnologia.</li>
-            <li>Treinar uma apresentação curta do projeto para entrevistas.</li>
-          </ol>
+          <aside style={{ display: "grid", gap: "20px" }}>
+            <section style={trailCompleted ? neon.cardGreen : neon.card}>
+              <p style={neon.eyebrow}>Recompensa final</p>
 
-          <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-            <a
-              href="/dashboard"
-              style={{
-                display: "inline-block",
-                background: "#22d3ee",
-                color: "#020617",
-                textDecoration: "none",
-                padding: "14px 20px",
-                borderRadius: "16px",
-                fontWeight: 900,
-              }}
-            >
-              Voltar ao dashboard
-            </a>
+              <h2 style={{ fontSize: "32px", margin: "10px 0" }}>
+                {trailCompleted
+                  ? "Certificado liberado 🏆"
+                  : "Continue para liberar"}
+              </h2>
 
-            <a
-              href="/"
-              style={{
-                display: "inline-block",
-                color: "white",
-                textDecoration: "none",
-                padding: "14px 20px",
-                borderRadius: "16px",
-                fontWeight: 900,
-                border: "1px solid rgba(255,255,255,0.18)",
-              }}
-            >
-              Ver página inicial
-            </a>
-          </div>
+              <p style={neon.muted}>
+                {trailCompleted
+                  ? "Você concluiu a trilha de 30 dias e já pode usar este projeto como peça de portfólio."
+                  : "Finalize todas as aulas para desbloquear a mensagem final de conclusão."}
+              </p>
+
+              <a
+                href={trailCompleted ? "/dashboard" : "/aulas/dia-1"}
+                style={trailCompleted ? neon.buttonSuccess : neon.buttonPrimary}
+              >
+                {trailCompleted ? "Voltar ao dashboard" : "Continuar trilha"}
+              </a>
+            </section>
+
+            <section style={neon.card}>
+              <p style={neon.eyebrow}>Próximos passos</p>
+
+              <ol
+                style={{
+                  ...neon.muted,
+                  paddingLeft: "22px",
+                  marginBottom: 0,
+                }}
+              >
+                <li>Melhorar o README do projeto.</li>
+                <li>Adicionar prints da aplicação funcionando.</li>
+                <li>Publicar o projeto online.</li>
+                <li>Colocar o link no LinkedIn.</li>
+                <li>Treinar uma apresentação curta do projeto.</li>
+              </ol>
+            </section>
+
+            <section style={neon.card}>
+              <p style={neon.eyebrow}>Resumo da missão</p>
+
+              <p style={{ ...neon.muted, marginBottom: 0 }}>
+                Você criou uma aplicação completa com home, dashboard, aulas
+                dinâmicas, quizzes, progresso local, mentor Alex e certificado.
+              </p>
+            </section>
+          </aside>
         </section>
       </section>
     </main>
@@ -294,30 +307,26 @@ export default function CertificadoPage() {
 
 function InfoCard({ label, value }: { label: string; value: string }) {
   return (
-    <div style={cardStyle}>
-      <p
+    <div
+      style={{
+        padding: "20px",
+        borderRadius: "22px",
+        background: "rgba(255,255,255,0.055)",
+        border: "1px solid rgba(255,255,255,0.11)",
+        boxShadow: "0 0 28px rgba(34,211,238,0.06)",
+      }}
+    >
+      <p style={neon.eyebrow}>{label}</p>
+
+      <strong
         style={{
-          color: "#22d3ee",
-          fontWeight: 900,
-          textTransform: "uppercase",
-          letterSpacing: "0.14em",
-          margin: 0,
+          fontSize: "34px",
+          display: "block",
+          marginTop: "10px",
         }}
       >
-        {label}
-      </p>
-
-      <strong style={{ fontSize: "34px", display: "block", marginTop: "10px" }}>
         {value}
       </strong>
     </div>
   );
 }
-
-const cardStyle: React.CSSProperties = {
-  marginTop: "28px",
-  padding: "24px",
-  border: "1px solid rgba(255,255,255,0.12)",
-  borderRadius: "24px",
-  background: "rgba(255,255,255,0.06)",
-};
