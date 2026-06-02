@@ -1,7 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getLessonBySlug, getNextLesson, getPreviousLesson } from "../../../lib/lessons";
+import {
+  getLessonBySlug,
+  getNextLesson,
+  getPreviousLesson,
+} from "../../../lib/lessons";
+import { neon } from "../../../lib/neonStyles";
 
 const progressKey = "suporte-tech-progress-v2";
 
@@ -41,16 +46,18 @@ export default function DynamicLessonPage({ params }: PageProps) {
 
   if (!lesson) {
     return (
-      <main style={pageStyle}>
-        <section style={{ maxWidth: "760px", margin: "0 auto" }}>
-          <a href="/dashboard" style={linkStyle}>
+      <main style={neon.page}>
+        <section style={{ ...neon.container, maxWidth: "760px" }}>
+          <a href="/dashboard" style={neon.buttonGhost}>
             ← Voltar para o dashboard
           </a>
 
-          <section style={cardStyle}>
-            <p style={eyebrowStyle}>Aula não encontrada</p>
-            <h1 style={{ fontSize: "42px" }}>Essa aula ainda não existe.</h1>
-            <p style={mutedStyle}>
+          <section style={{ ...neon.card, marginTop: "32px" }}>
+            <p style={neon.eyebrow}>Aula não encontrada</p>
+            <h1 style={{ fontSize: "44px", margin: "12px 0" }}>
+              Essa aula ainda não existe.
+            </h1>
+            <p style={neon.muted}>
               Volte para o dashboard e escolha uma aula disponível.
             </p>
           </section>
@@ -64,9 +71,15 @@ export default function DynamicLessonPage({ params }: PageProps) {
   );
 
   const isLessonCompleted = progress.completedLessons.includes(lesson.slug);
+  const isAlexUsed = progress.alexUsedLessons.includes(lesson.slug);
+
   const isPreviousLessonCompleted =
     lesson.dayNumber === 1 ||
-    Boolean(previousLesson && progress.completedLessons.includes(previousLesson.slug));
+    Boolean(
+      previousLesson && progress.completedLessons.includes(previousLesson.slug)
+    );
+
+  const lessonProgress = [isLessonCompleted, isAlexUsed].filter(Boolean).length;
 
   function saveProgress(newProgress: ProgressData) {
     setProgress(newProgress);
@@ -119,36 +132,27 @@ export default function DynamicLessonPage({ params }: PageProps) {
 
   if (!isPreviousLessonCompleted) {
     return (
-      <main style={pageStyle}>
-        <section style={{ maxWidth: "760px", margin: "0 auto" }}>
-          <a href="/dashboard" style={linkStyle}>
+      <main style={neon.page}>
+        <section style={{ ...neon.container, maxWidth: "760px" }}>
+          <a href="/dashboard" style={neon.buttonGhost}>
             ← Voltar para o dashboard
           </a>
 
-          <section style={cardStyle}>
-            <p style={eyebrowStyle}>Aula bloqueada</p>
+          <section style={{ ...neon.card, marginTop: "32px" }}>
+            <p style={neon.eyebrow}>Aula bloqueada</p>
 
-            <h1 style={{ fontSize: "42px", marginTop: "12px" }}>
+            <h1 style={{ fontSize: "44px", margin: "12px 0" }}>
               Conclua a aula anterior primeiro
             </h1>
 
-            <p style={mutedStyle}>
-              Para liberar esta aula, volte ao dashboard e conclua a missão
-              anterior.
+            <p style={neon.muted}>
+              Para liberar esta missão, volte ao dashboard e conclua a etapa
+              anterior da trilha.
             </p>
 
             <a
               href="/dashboard"
-              style={{
-                display: "inline-block",
-                marginTop: "20px",
-                background: "#22d3ee",
-                color: "#020617",
-                textDecoration: "none",
-                padding: "14px 20px",
-                borderRadius: "16px",
-                fontWeight: 900,
-              }}
+              style={{ ...neon.buttonPrimary, marginTop: "18px" }}
             >
               Voltar para o dashboard
             </a>
@@ -159,209 +163,363 @@ export default function DynamicLessonPage({ params }: PageProps) {
   }
 
   return (
-    <main style={pageStyle}>
-      <section style={{ maxWidth: "960px", margin: "0 auto" }}>
-        <a href="/dashboard" style={linkStyle}>
-          ← Voltar para o dashboard
-        </a>
-
-        <p style={{ ...eyebrowStyle, marginTop: "40px" }}>
-          Dia {lesson.dayNumber}
-        </p>
-
-        <h1
+    <main style={neon.page}>
+      <section style={{ ...neon.container, maxWidth: "1040px" }}>
+        <header
           style={{
-            fontSize: "48px",
-            lineHeight: 1.1,
-            marginTop: "12px",
+            display: "flex",
+            justifyContent: "space-between",
+            gap: "16px",
+            alignItems: "center",
+            flexWrap: "wrap",
+            marginBottom: "34px",
           }}
         >
-          {lesson.title}
-        </h1>
+          <a href="/dashboard" style={neon.buttonGhost}>
+            ← Dashboard
+          </a>
 
-        <p style={{ ...mutedStyle, fontSize: "20px", maxWidth: "760px" }}>
-          {lesson.description}
-        </p>
+          <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+            {previousLesson && (
+              <a
+                href={`/aulas/${previousLesson.slug}`}
+                style={neon.buttonGhost}
+              >
+                Aula anterior
+              </a>
+            )}
 
-        <section style={cardStyle}>
-          <h2>Objetivo da aula</h2>
-          <p style={mutedStyle}>{lesson.objective}</p>
-        </section>
-
-        <section style={cardStyle}>
-          <h2>Resumo rápido</h2>
-          <p style={mutedStyle}>{lesson.summary}</p>
-        </section>
-
-        <section style={cardStyle}>
-          <h2>Conceitos do dia</h2>
-
-          <div style={{ display: "grid", gap: "12px" }}>
-            {lesson.concepts.map((concept) => (
-              <Concept
-                key={concept.title}
-                title={concept.title}
-                text={concept.text}
-              />
-            ))}
+            {nextLesson && isLessonCompleted && (
+              <a
+                href={`/aulas/${nextLesson.slug}`}
+                style={neon.buttonPrimary}
+              >
+                Próxima aula
+              </a>
+            )}
           </div>
-        </section>
+        </header>
 
-        <section style={quizStyle}>
-          <p style={eyebrowStyle}>Quiz rápido</p>
-
-          <h2>{lesson.quiz.title}</h2>
-
-          <div style={{ display: "grid", gap: "12px", marginTop: "16px" }}>
-            {lesson.quiz.options.map((option) => {
-              const isSelected = selectedOption === option.id;
-
-              return (
-                <button
-                  key={option.id}
-                  onClick={() => handleSelectOption(option.id)}
-                  style={{
-                    ...buttonStyle,
-                    border: isSelected
-                      ? "1px solid #22d3ee"
-                      : "1px solid rgba(255,255,255,0.16)",
-                    background: isSelected
-                      ? "rgba(34,211,238,0.16)"
-                      : "rgba(255,255,255,0.06)",
-                  }}
-                >
-                  {option.text}
-                </button>
-              );
-            })}
-          </div>
-
-          {selectedAnswer && (
-            <div
-              style={{
-                marginTop: "24px",
-                padding: "20px",
-                borderRadius: "18px",
-                background: selectedAnswer.isCorrect
-                  ? "rgba(34,197,94,0.12)"
-                  : "rgba(239,68,68,0.12)",
-                border: selectedAnswer.isCorrect
-                  ? "1px solid rgba(34,197,94,0.35)"
-                  : "1px solid rgba(239,68,68,0.35)",
-              }}
-            >
-              <h3 style={{ marginTop: 0 }}>
-                {selectedAnswer.isCorrect
-                  ? "✅ Resposta correta!"
-                  : "❌ Ainda não foi dessa vez."}
-              </h3>
-
-              <p style={mutedStyle}>{selectedAnswer.explanation}</p>
-            </div>
-          )}
-        </section>
-
-        <section style={cardStyle}>
-          <p style={eyebrowStyle}>Assistente Alex</p>
-
-          <h2>Teve alguma dificuldade?</h2>
-
-          <p style={mutedStyle}>
-            Escreva abaixo o que ficou confuso. O Alex vai responder com uma
-            explicação simples e um material paralelo para revisar.
-          </p>
-
-          <textarea
-            value={difficulty}
-            onChange={(event) => setDifficulty(event.target.value)}
-            placeholder="Exemplo: não entendi o conceito da aula..."
+        <section
+          style={{
+            ...neon.card,
+            padding: "42px",
+            overflow: "hidden",
+            marginBottom: "26px",
+          }}
+        >
+          <div
             style={{
-              width: "100%",
-              minHeight: "120px",
-              marginTop: "16px",
-              padding: "16px",
-              borderRadius: "16px",
-              border: "1px solid rgba(255,255,255,0.16)",
-              background: "rgba(255,255,255,0.06)",
-              color: "white",
-              fontSize: "16px",
-              resize: "vertical",
-              boxSizing: "border-box",
+              position: "absolute",
+              width: "300px",
+              height: "300px",
+              borderRadius: "999px",
+              background: "rgba(34,211,238,0.14)",
+              filter: "blur(52px)",
+              right: "-90px",
+              top: "-120px",
             }}
           />
 
-          <button
-            onClick={handleAskAlex}
-            style={{
-              marginTop: "16px",
-              padding: "16px",
-              borderRadius: "16px",
-              border: "none",
-              background: "#22d3ee",
-              color: "#020617",
-              fontWeight: 900,
-              cursor: "pointer",
-              fontSize: "16px",
-            }}
-          >
-            Pedir ajuda ao Alex
-          </button>
+          <div style={{ position: "relative" }}>
+            <p style={neon.eyebrow}>Dia {lesson.dayNumber} · Missão ativa</p>
 
-          {alexResponse && (
-            <div
+            <h1
               style={{
-                marginTop: "20px",
-                padding: "20px",
-                borderRadius: "18px",
-                background: "rgba(34,211,238,0.1)",
-                border: "1px solid rgba(34,211,238,0.25)",
+                fontSize: "56px",
+                lineHeight: 1,
+                marginTop: "16px",
+                marginBottom: "18px",
               }}
             >
-              <strong>Resposta do Alex</strong>
-              <p style={{ ...mutedStyle, marginBottom: 0 }}>
-                {alexResponse}
-              </p>
+              {lesson.title}
+            </h1>
+
+            <p style={{ ...neon.muted, fontSize: "20px", maxWidth: "820px" }}>
+              {lesson.description}
+            </p>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+                gap: "14px",
+                marginTop: "28px",
+              }}
+            >
+              <MissionStat
+                label="Quiz"
+                value={isLessonCompleted ? "Concluído" : "Pendente"}
+                success={isLessonCompleted}
+              />
+
+              <MissionStat
+                label="Alex"
+                value={isAlexUsed ? "Usado" : "Opcional"}
+                success={isAlexUsed}
+              />
+
+              <MissionStat
+                label="Progresso"
+                value={`${lessonProgress}/2`}
+                success={lessonProgress === 2}
+              />
             </div>
-          )}
+
+            <div style={{ marginTop: "24px" }}>
+              <div style={neon.progressTrack}>
+                <div
+                  style={{
+                    ...neon.progressFill,
+                    width: `${(lessonProgress / 2) * 100}%`,
+                  }}
+                />
+              </div>
+            </div>
+          </div>
         </section>
 
-        <section style={cardStyle}>
-          <h2>Fechamento</h2>
+        <section
+          style={{
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 1fr) minmax(280px, 0.7fr)",
+            gap: "24px",
+            alignItems: "start",
+          }}
+        >
+          <section style={{ display: "grid", gap: "24px" }}>
+            <section style={neon.card}>
+              <p style={neon.eyebrow}>Objetivo da aula</p>
+              <h2 style={{ fontSize: "30px", margin: "10px 0" }}>
+                O que você vai dominar
+              </h2>
+              <p style={{ ...neon.muted, marginBottom: 0 }}>
+                {lesson.objective}
+              </p>
+            </section>
 
-          <p style={mutedStyle}>{lesson.closing}</p>
+            <section style={neon.card}>
+              <p style={neon.eyebrow}>Resumo rápido</p>
+              <h2 style={{ fontSize: "30px", margin: "10px 0" }}>
+                Contexto da missão
+              </h2>
+              <p style={{ ...neon.muted, marginBottom: 0 }}>
+                {lesson.summary}
+              </p>
+            </section>
 
-          {isLessonCompleted && (
-            <div
-              style={{
-                marginTop: "20px",
-                padding: "20px",
-                borderRadius: "18px",
-                background: "rgba(34,197,94,0.12)",
-                border: "1px solid rgba(34,197,94,0.35)",
-              }}
-            >
-              <strong>Dia {lesson.dayNumber} concluído 🎉</strong>
+            <section style={neon.card}>
+              <p style={neon.eyebrow}>Conceitos do dia</p>
+              <h2 style={{ fontSize: "30px", margin: "10px 0 18px" }}>
+                Blocos de conhecimento
+              </h2>
 
-              <p style={{ ...mutedStyle, marginBottom: "16px" }}>
-                Seu progresso foi salvo. Você já pode continuar sua jornada.
+              <div style={{ display: "grid", gap: "12px" }}>
+                {lesson.concepts.map((concept) => (
+                  <Concept
+                    key={concept.title}
+                    title={concept.title}
+                    text={concept.text}
+                  />
+                ))}
+              </div>
+            </section>
+
+            <section style={neon.card}>
+              <p style={neon.eyebrow}>Quiz rápido</p>
+
+              <h2 style={{ fontSize: "30px", margin: "10px 0 18px" }}>
+                {lesson.quiz.title}
+              </h2>
+
+              <div style={{ display: "grid", gap: "12px" }}>
+                {lesson.quiz.options.map((option) => {
+                  const isSelected = selectedOption === option.id;
+
+                  return (
+                    <button
+                      key={option.id}
+                      onClick={() => handleSelectOption(option.id)}
+                      style={{
+                        padding: "18px",
+                        borderRadius: "18px",
+                        color: neon.colors.text,
+                        fontWeight: 800,
+                        cursor: "pointer",
+                        textAlign: "left",
+                        border: isSelected
+                          ? "1px solid rgba(34,211,238,0.75)"
+                          : "1px solid rgba(255,255,255,0.12)",
+                        background: isSelected
+                          ? "rgba(34,211,238,0.14)"
+                          : "rgba(255,255,255,0.05)",
+                        boxShadow: isSelected
+                          ? "0 0 24px rgba(34,211,238,0.14)"
+                          : "none",
+                      }}
+                    >
+                      {option.text}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {selectedAnswer && (
+                <div
+                  style={{
+                    marginTop: "22px",
+                    padding: "20px",
+                    borderRadius: "20px",
+                    background: selectedAnswer.isCorrect
+                      ? neon.colors.greenSoft
+                      : "rgba(251,113,133,0.13)",
+                    border: selectedAnswer.isCorrect
+                      ? "1px solid rgba(34,197,94,0.35)"
+                      : "1px solid rgba(251,113,133,0.35)",
+                  }}
+                >
+                  <h3 style={{ marginTop: 0 }}>
+                    {selectedAnswer.isCorrect
+                      ? "✅ Resposta correta!"
+                      : "❌ Ainda não foi dessa vez."}
+                  </h3>
+
+                  <p style={{ ...neon.muted, marginBottom: 0 }}>
+                    {selectedAnswer.explanation}
+                  </p>
+                </div>
+              )}
+            </section>
+
+            <section style={isLessonCompleted ? neon.cardGreen : neon.card}>
+              <p style={neon.eyebrow}>Fechamento</p>
+
+              <h2 style={{ fontSize: "30px", margin: "10px 0" }}>
+                Conclusão da missão
+              </h2>
+
+              <p style={neon.muted}>{lesson.closing}</p>
+
+              {isLessonCompleted && (
+                <div
+                  style={{
+                    marginTop: "20px",
+                    padding: "20px",
+                    borderRadius: "20px",
+                    background: "rgba(34,197,94,0.12)",
+                    border: "1px solid rgba(34,197,94,0.35)",
+                  }}
+                >
+                  <strong>Dia {lesson.dayNumber} concluído 🎉</strong>
+
+                  <p style={{ ...neon.muted, marginBottom: "16px" }}>
+                    Seu progresso foi salvo. Você já pode continuar sua jornada.
+                  </p>
+
+                  <a
+                    href={
+                      nextLesson ? `/aulas/${nextLesson.slug}` : "/certificado"
+                    }
+                    style={
+                      nextLesson ? neon.buttonPrimary : neon.buttonSuccess
+                    }
+                  >
+                    {nextLesson
+                      ? `Ir para o Dia ${nextLesson.dayNumber}`
+                      : "Ver certificado"}
+                  </a>
+                </div>
+              )}
+            </section>
+          </section>
+
+          <aside style={{ display: "grid", gap: "20px" }}>
+            <section style={neon.cardGreen}>
+              <p style={neon.eyebrow}>Assistente Alex</p>
+
+              <h2 style={{ fontSize: "30px", margin: "10px 0" }}>
+                Travou em algo?
+              </h2>
+
+              <p style={neon.muted}>
+                Escreva sua dúvida. O Alex vai responder com uma explicação
+                simples baseada nesta aula.
               </p>
 
-              <a
-                href={nextLesson ? `/aulas/${nextLesson.slug}` : "/dashboard"}
+              <textarea
+                value={difficulty}
+                onChange={(event) => setDifficulty(event.target.value)}
+                placeholder="Exemplo: não entendi o conceito da aula..."
                 style={{
-                  display: "inline-block",
-                  background: "#22d3ee",
-                  color: "#020617",
-                  textDecoration: "none",
-                  padding: "14px 20px",
-                  borderRadius: "16px",
-                  fontWeight: 900,
+                  width: "100%",
+                  minHeight: "130px",
+                  marginTop: "14px",
+                  padding: "16px",
+                  borderRadius: "18px",
+                  border: "1px solid rgba(255,255,255,0.14)",
+                  background: "rgba(2,6,23,0.55)",
+                  color: neon.colors.text,
+                  fontSize: "16px",
+                  resize: "vertical",
+                  boxSizing: "border-box",
+                  outline: "none",
+                }}
+              />
+
+              <button
+                onClick={handleAskAlex}
+                style={{
+                  ...neon.buttonPrimary,
+                  marginTop: "14px",
+                  width: "100%",
                 }}
               >
-                {nextLesson ? `Ir para o Dia ${nextLesson.dayNumber}` : "Voltar ao dashboard"}
-              </a>
-            </div>
-          )}
+                Pedir ajuda ao Alex
+              </button>
+
+              {alexResponse && (
+                <div
+                  style={{
+                    marginTop: "18px",
+                    padding: "18px",
+                    borderRadius: "18px",
+                    background: "rgba(34,211,238,0.1)",
+                    border: "1px solid rgba(34,211,238,0.25)",
+                  }}
+                >
+                  <strong>Resposta do Alex</strong>
+                  <p style={{ ...neon.muted, marginBottom: 0 }}>
+                    {alexResponse}
+                  </p>
+                </div>
+              )}
+            </section>
+
+            <section style={neon.card}>
+              <p style={neon.eyebrow}>Navegação</p>
+
+              <div style={{ display: "grid", gap: "12px", marginTop: "16px" }}>
+                <a href="/dashboard" style={neon.buttonGhost}>
+                  Voltar ao dashboard
+                </a>
+
+                {nextLesson && isLessonCompleted && (
+                  <a
+                    href={`/aulas/${nextLesson.slug}`}
+                    style={neon.buttonPrimary}
+                  >
+                    Próxima missão
+                  </a>
+                )}
+
+                {!nextLesson && isLessonCompleted && (
+                  <a href="/certificado" style={neon.buttonSuccess}>
+                    Ver certificado
+                  </a>
+                )}
+              </div>
+            </section>
+          </aside>
         </section>
       </section>
     </main>
@@ -374,65 +532,46 @@ function Concept({ title, text }: { title: string; text: string }) {
       style={{
         padding: "18px",
         borderRadius: "18px",
-        background: "rgba(255,255,255,0.05)",
-        border: "1px solid rgba(255,255,255,0.1)",
+        background: "rgba(255,255,255,0.055)",
+        border: "1px solid rgba(255,255,255,0.11)",
       }}
     >
-      <strong style={{ color: "#67e8f9" }}>{title}</strong>
-      <p style={{ ...mutedStyle, marginBottom: 0 }}>{text}</p>
+      <strong style={{ color: neon.colors.cyan }}>{title}</strong>
+      <p style={{ ...neon.muted, marginBottom: 0 }}>{text}</p>
     </div>
   );
 }
 
-const pageStyle: React.CSSProperties = {
-  minHeight: "100vh",
-  background: "#020617",
-  color: "white",
-  fontFamily: "Arial, Helvetica, sans-serif",
-  padding: "40px",
-};
-
-const cardStyle: React.CSSProperties = {
-  marginTop: "28px",
-  padding: "24px",
-  border: "1px solid rgba(255,255,255,0.12)",
-  borderRadius: "24px",
-  background: "rgba(255,255,255,0.06)",
-};
-
-const quizStyle: React.CSSProperties = {
-  marginTop: "28px",
-  padding: "24px",
-  border: "1px solid rgba(34,211,238,0.3)",
-  borderRadius: "24px",
-  background: "rgba(34,211,238,0.08)",
-};
-
-const eyebrowStyle: React.CSSProperties = {
-  color: "#22d3ee",
-  fontWeight: 900,
-  textTransform: "uppercase",
-  letterSpacing: "0.16em",
-  margin: 0,
-};
-
-const mutedStyle: React.CSSProperties = {
-  color: "#cbd5e1",
-  lineHeight: 1.7,
-  fontSize: "17px",
-};
-
-const linkStyle: React.CSSProperties = {
-  color: "#22d3ee",
-  fontWeight: 800,
-  textDecoration: "none",
-};
-
-const buttonStyle: React.CSSProperties = {
-  padding: "16px",
-  borderRadius: "16px",
-  color: "white",
-  fontWeight: 800,
-  cursor: "pointer",
-  textAlign: "left",
-};
+function MissionStat({
+  label,
+  value,
+  success,
+}: {
+  label: string;
+  value: string;
+  success: boolean;
+}) {
+  return (
+    <div
+      style={{
+        padding: "16px",
+        borderRadius: "18px",
+        background: success ? neon.colors.greenSoft : "rgba(255,255,255,0.055)",
+        border: success
+          ? "1px solid rgba(34,197,94,0.35)"
+          : "1px solid rgba(255,255,255,0.11)",
+      }}
+    >
+      <p style={neon.eyebrow}>{label}</p>
+      <strong
+        style={{
+          display: "block",
+          marginTop: "8px",
+          color: success ? neon.colors.green : neon.colors.text,
+        }}
+      >
+        {value}
+      </strong>
+    </div>
+  );
+}
