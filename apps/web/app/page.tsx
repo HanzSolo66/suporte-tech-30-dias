@@ -2,28 +2,32 @@ import { neon } from "../lib/neonStyles";
 
 const features = [
   {
-    title: "30 dias de missão",
-    description: "Uma trilha organizada para começar do zero e avançar todos os dias.",
+    title: "Trilha prática de 30 dias",
+    description:
+      "Uma jornada guiada para sair do zero e construir base em lógica, Python, dados, APIs e automação.",
   },
   {
-    title: "Quizzes com feedback",
-    description: "Teste seu entendimento e receba explicações quando errar.",
+    title: "Aprendizado com feedback",
+    description:
+      "Cada aula tem quiz, explicação do erro e reforço do conceito para transformar dúvida em progresso.",
   },
   {
     title: "Assistente Alex",
-    description: "Um mentor simples para explicar conceitos difíceis durante a aula.",
+    description:
+      "Um mentor de apoio dentro das aulas para explicar conceitos com linguagem simples e exemplos de suporte.",
   },
   {
-    title: "Certificado final",
-    description: "Conclua a trilha e gere um texto para usar no portfólio.",
+    title: "Portfólio real",
+    description:
+      "Ao final da trilha, você tem um projeto apresentável, certificado e texto pronto para LinkedIn ou GitHub.",
   },
 ];
 
 const learningPath = [
-  "Lógica de programação",
-  "Python básico",
-  "Dados e SQL",
-  "APIs e automação",
+  "Semana 1 · Base lógica",
+  "Semana 2 · Python básico",
+  "Semana 3 · Dados e SQL",
+  "Semana 4 · APIs e automação",
 ];
 
 export default function HomePage() {
@@ -50,13 +54,13 @@ export default function HomePage() {
                 color: neon.colors.muted,
               }}
             >
-              Missão de transição para tecnologia
+              Um projeto de transição de carreira para tecnologia
             </strong>
           </div>
 
           <nav style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
             <a href="/dashboard" style={neon.buttonGhost}>
-              Dashboard
+              Ver dashboard
             </a>
             <a href="/certificado" style={neon.buttonPrimary}>
               Certificado
@@ -74,13 +78,13 @@ export default function HomePage() {
           <div
             style={{
               position: "absolute",
-              width: "260px",
-              height: "260px",
+              width: "280px",
+              height: "280px",
               borderRadius: "999px",
               background: "rgba(34,211,238,0.16)",
-              filter: "blur(40px)",
-              right: "-60px",
-              top: "-80px",
+              filter: "blur(42px)",
+              right: "-70px",
+              top: "-90px",
             }}
           />
 
@@ -102,11 +106,11 @@ export default function HomePage() {
                   lineHeight: 1,
                   marginTop: "18px",
                   marginBottom: "22px",
-                  maxWidth: "780px",
+                  maxWidth: "820px",
                 }}
               >
-                Entre em tecnologia pelo caminho do{" "}
-                <span style={{ color: neon.colors.cyan }}>suporte</span>.
+                Aprenda tecnologia usando sua experiência em{" "}
+                <span style={{ color: neon.colors.cyan }}>atendimento</span>.
               </h1>
 
               <p
@@ -116,8 +120,9 @@ export default function HomePage() {
                   maxWidth: "780px",
                 }}
               >
-                Aprenda lógica, Python, SQL, APIs e automação com exemplos reais
-                de atendimento, help desk e melhoria de processos.
+                Uma aplicação gamificada criada para quem está em transição de
+                carreira e quer começar por um caminho prático: suporte,
+                processos, dados, automações e resolução de problemas reais.
               </p>
 
               <div
@@ -139,7 +144,7 @@ export default function HomePage() {
             </div>
 
             <div style={neon.cardGreen}>
-              <p style={neon.eyebrow}>Status da trilha</p>
+              <p style={neon.eyebrow}>Por que este projeto existe?</p>
 
               <h2
                 style={{
@@ -149,33 +154,27 @@ export default function HomePage() {
                   marginBottom: "14px",
                 }}
               >
-                30 aulas para construir sua primeira base tech.
+                Para transformar experiência com pessoas em habilidade tech.
               </h2>
 
               <p style={neon.muted}>
-                Uma experiência gamificada para estudar um pouco por dia, com
-                progresso, missões e revisão constante.
+                Atendimento ensina escuta, diagnóstico, organização e resolução
+                de problemas. Este projeto conecta essas habilidades com lógica,
+                programação, dados e automação.
               </p>
 
               <div style={{ marginTop: "22px", display: "grid", gap: "12px" }}>
-                {learningPath.map((item, index) => (
+                {learningPath.map((item) => (
                   <div
                     key={item}
                     style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      gap: "12px",
-                      alignItems: "center",
                       padding: "14px",
                       borderRadius: "16px",
                       background: "rgba(255,255,255,0.06)",
                       border: "1px solid rgba(255,255,255,0.1)",
                     }}
                   >
-                    <span style={{ color: neon.colors.muted }}>{item}</span>
-                    <strong style={{ color: neon.colors.green }}>
-                      Semana {index + 1}
-                    </strong>
+                    <strong style={{ color: neon.colors.green }}>{item}</strong>
                   </div>
                 ))}
               </div>
@@ -212,13 +211,14 @@ export default function HomePage() {
           }}
         >
           <div>
-            <p style={neon.eyebrow}>Pronto para começar?</p>
+            <p style={neon.eyebrow}>Projeto de portfólio</p>
             <h2 style={{ fontSize: "34px", margin: "10px 0" }}>
-              Sua primeira missão está liberada.
+              Um app para estudar, praticar e apresentar.
             </h2>
             <p style={{ ...neon.muted, marginBottom: 0 }}>
-              Comece pela aula 1, responda o quiz e acompanhe seu avanço pelo
-              dashboard.
+              Este projeto demonstra conceitos de Next.js, React, TypeScript,
+              rotas dinâmicas, estado, localStorage, dashboard, gamificação e
+              experiência do usuário.
             </p>
           </div>
 
