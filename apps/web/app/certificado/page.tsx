@@ -1,14 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { lessons } from "../../lib/lessons";
 import { neon } from "../../lib/neonStyles";
 
 const progressKey = "suporte-tech-progress-v2";
+const profileKey = "suporte-tech-student-profile";
 
 type ProgressData = {
   completedLessons: string[];
   alexUsedLessons: string[];
+};
+
+type StudentProfile = {
+  name: string;
 };
 
 const initialProgress: ProgressData = {
@@ -16,15 +21,25 @@ const initialProgress: ProgressData = {
   alexUsedLessons: [],
 };
 
+const initialProfile: StudentProfile = {
+  name: "",
+};
+
 export default function CertificadoPage() {
   const [progress, setProgress] = useState<ProgressData>(initialProgress);
+  const [profile, setProfile] = useState<StudentProfile>(initialProfile);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const savedProgress = window.localStorage.getItem(progressKey);
+    const savedProfile = window.localStorage.getItem(profileKey);
 
     if (savedProgress) {
       setProgress(JSON.parse(savedProgress));
+    }
+
+    if (savedProfile) {
+      setProfile(JSON.parse(savedProfile));
     }
   }, []);
 
@@ -35,8 +50,28 @@ export default function CertificadoPage() {
   const trailCompleted = completedLessons >= totalLessons;
   const xp = completedLessons * 120 + alexUses * 30;
 
-  const portfolioText =
-    "Concluí a trilha Suporte Tech 30 Dias, um projeto prático focado em lógica de programação, Python básico, dados, SQL, APIs, automações e melhoria de processos de atendimento. Durante a jornada, desenvolvi uma aplicação web gamificada com aulas, quizzes, feedback automático, progresso local, Assistente Alex e certificado final.";
+  const studentName = profile.name || "Aluno em formação";
+
+  const completionDate = useMemo(() => {
+    return new Date().toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+  }, []);
+
+  const certificateCode = useMemo(() => {
+    const nameBase = studentName
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-zA-Z0-9]/g, "")
+      .toUpperCase()
+      .slice(0, 6);
+
+    return `ST30-${nameBase || "ALUNO"}-${totalLessons}-${xp}`;
+  }, [studentName, totalLessons, xp]);
+
+  const portfolioText = `Concluí a trilha Suporte Tech 30 Dias, um projeto prático focado em lógica de programação, Python básico, dados, SQL, APIs, automações e melhoria de processos de atendimento. Durante a jornada, desenvolvi uma aplicação web gamificada com aulas, quizzes, feedback automático, progresso local, Assistente Alex e certificado final. Certificado emitido para ${studentName}.`;
 
   function handleCopyPortfolioText() {
     navigator.clipboard.writeText(portfolioText);
@@ -45,6 +80,10 @@ export default function CertificadoPage() {
     setTimeout(() => {
       setCopied(false);
     }, 2500);
+  }
+
+  function handlePrintCertificate() {
+    window.print();
   }
 
   return (
@@ -109,13 +148,19 @@ export default function CertificadoPage() {
             >
               {trailCompleted ? (
                 <>
-                  Parabéns, missão{" "}
-                  <span style={{ color: neon.colors.green }}>concluída</span>.
+                  Certificado emitido para{" "}
+                  <span style={{ color: neon.colors.green }}>
+                    {studentName}
+                  </span>
+                  .
                 </>
               ) : (
                 <>
-                  Sua trilha ainda está{" "}
-                  <span style={{ color: neon.colors.cyan }}>em andamento</span>.
+                  Certificado de{" "}
+                  <span style={{ color: neon.colors.cyan }}>
+                    {studentName}
+                  </span>{" "}
+                  ainda em andamento.
                 </>
               )}
             </h1>
@@ -127,9 +172,9 @@ export default function CertificadoPage() {
                 maxWidth: "820px",
               }}
             >
-              Você construiu uma base prática em suporte com tecnologia,
-              passando por lógica, Python, dados, SQL, APIs, automação e
-              projetos aplicados ao atendimento.
+              Este certificado registra a conclusão da trilha Suporte Tech 30
+              Dias, com estudos práticos em lógica, Python, dados, SQL, APIs,
+              automação, suporte e projetos aplicados.
             </p>
 
             <div style={{ marginTop: "28px" }}>
@@ -150,6 +195,27 @@ export default function CertificadoPage() {
           </div>
         </section>
 
+        <section style={{ ...neon.card, marginBottom: "26px" }}>
+          <p style={neon.eyebrow}>Dados do certificado</p>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+              gap: "16px",
+              marginTop: "18px",
+            }}
+          >
+            <InfoCard label="Aluno" value={studentName} />
+            <InfoCard label="Data" value={completionDate} />
+            <InfoCard label="Código" value={certificateCode} />
+            <InfoCard
+              label="Status"
+              value={trailCompleted ? "Concluído" : "Em andamento"}
+            />
+          </div>
+        </section>
+
         <section
           style={{
             display: "grid",
@@ -164,10 +230,7 @@ export default function CertificadoPage() {
           />
           <InfoCard label="XP total" value={String(xp)} />
           <InfoCard label="Uso do Alex" value={`${alexUses} vez(es)`} />
-          <InfoCard
-            label="Status"
-            value={trailCompleted ? "Concluído" : "Em andamento"}
-          />
+          <InfoCard label="Carga prática" value="30 missões" />
         </section>
 
         <section
@@ -180,10 +243,10 @@ export default function CertificadoPage() {
         >
           <section style={{ display: "grid", gap: "24px" }}>
             <section style={neon.card}>
-              <p style={neon.eyebrow}>Habilidades praticadas</p>
+              <p style={neon.eyebrow}>Competências concluídas</p>
 
               <h2 style={{ fontSize: "34px", margin: "10px 0 18px" }}>
-                Arsenal tech desbloqueado
+                Habilidades demonstradas
               </h2>
 
               <div
@@ -202,6 +265,8 @@ export default function CertificadoPage() {
                   "Automação de processos",
                   "Projetos práticos",
                   "Portfólio",
+                  "Git e GitHub",
+                  "Next.js e React",
                 ].map((skill) => (
                   <span
                     key={skill}
@@ -254,22 +319,22 @@ export default function CertificadoPage() {
 
               <h2 style={{ fontSize: "32px", margin: "10px 0" }}>
                 {trailCompleted
-                  ? "Certificado liberado 🏆"
+                  ? "Certificado profissional liberado 🏆"
                   : "Continue para liberar"}
               </h2>
 
               <p style={neon.muted}>
                 {trailCompleted
                   ? "Você concluiu a trilha de 30 dias e já pode usar este projeto como peça de portfólio."
-                  : "Finalize todas as aulas para desbloquear a mensagem final de conclusão."}
+                  : "Finalize todas as aulas para desbloquear o certificado completo."}
               </p>
 
-              <a
-                href={trailCompleted ? "/dashboard" : "/aulas/dia-1"}
-                style={trailCompleted ? neon.buttonSuccess : neon.buttonPrimary}
+              <button
+                onClick={handlePrintCertificate}
+                style={trailCompleted ? neon.buttonSuccess : neon.buttonGhost}
               >
-                {trailCompleted ? "Voltar ao dashboard" : "Continuar trilha"}
-              </a>
+                Imprimir / salvar PDF
+              </button>
             </section>
 
             <section style={neon.card}>
@@ -282,11 +347,11 @@ export default function CertificadoPage() {
                   marginBottom: 0,
                 }}
               >
-                <li>Melhorar o README do projeto.</li>
-                <li>Adicionar prints da aplicação funcionando.</li>
                 <li>Publicar o projeto online.</li>
+                <li>Adicionar prints no README.</li>
                 <li>Colocar o link no LinkedIn.</li>
                 <li>Treinar uma apresentação curta do projeto.</li>
+                <li>Evoluir o Alex com API de IA.</li>
               </ol>
             </section>
 
@@ -295,7 +360,8 @@ export default function CertificadoPage() {
 
               <p style={{ ...neon.muted, marginBottom: 0 }}>
                 Você criou uma aplicação completa com home, dashboard, aulas
-                dinâmicas, quizzes, progresso local, mentor Alex e certificado.
+                dinâmicas, quizzes, progresso local, nome personalizado, mentor
+                Alex e certificado final.
               </p>
             </section>
           </aside>
@@ -320,9 +386,10 @@ function InfoCard({ label, value }: { label: string; value: string }) {
 
       <strong
         style={{
-          fontSize: "34px",
+          fontSize: "26px",
           display: "block",
           marginTop: "10px",
+          wordBreak: "break-word",
         }}
       >
         {value}
