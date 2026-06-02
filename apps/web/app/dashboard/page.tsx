@@ -5,15 +5,24 @@ import { lessons } from "../../lib/lessons";
 import { neon } from "../../lib/neonStyles";
 
 const progressKey = "suporte-tech-progress-v2";
+const profileKey = "suporte-tech-student-profile";
 
 type ProgressData = {
   completedLessons: string[];
   alexUsedLessons: string[];
 };
 
+type StudentProfile = {
+  name: string;
+};
+
 const initialProgress: ProgressData = {
   completedLessons: [],
   alexUsedLessons: [],
+};
+
+const initialProfile: StudentProfile = {
+  name: "",
 };
 
 const weeks = [
@@ -45,14 +54,40 @@ const weeks = [
 
 export default function DashboardPage() {
   const [progress, setProgress] = useState<ProgressData>(initialProgress);
+  const [profile, setProfile] = useState<StudentProfile>(initialProfile);
+  const [studentNameInput, setStudentNameInput] = useState("");
 
   useEffect(() => {
     const savedProgress = window.localStorage.getItem(progressKey);
+    const savedProfile = window.localStorage.getItem(profileKey);
 
     if (savedProgress) {
       setProgress(JSON.parse(savedProgress));
     }
+
+    if (savedProfile) {
+      const parsedProfile = JSON.parse(savedProfile) as StudentProfile;
+
+      setProfile(parsedProfile);
+      setStudentNameInput(parsedProfile.name);
+    }
   }, []);
+
+  function handleSaveStudentName() {
+    const cleanName = studentNameInput.trim();
+
+    if (!cleanName) {
+      window.alert("Digite um nome para personalizar sua trilha.");
+      return;
+    }
+
+    const newProfile = {
+      name: cleanName,
+    };
+
+    window.localStorage.setItem(profileKey, JSON.stringify(newProfile));
+    setProfile(newProfile);
+  }
 
   function handleResetProgress() {
     const confirmed = window.confirm(
@@ -67,6 +102,7 @@ export default function DashboardPage() {
     setProgress(initialProgress);
   }
 
+  const displayName = profile.name || "aluno";
   const completedLessons = progress.completedLessons.length;
   const totalLessons = lessons.length;
   const alexUses = progress.alexUsedLessons.length;
@@ -104,7 +140,7 @@ export default function DashboardPage() {
               }}
             >
               Central da missão,{" "}
-              <span style={{ color: neon.colors.cyan }}>Matheus</span>.
+              <span style={{ color: neon.colors.cyan }}>{displayName}</span>.
             </h1>
 
             <p
@@ -115,8 +151,8 @@ export default function DashboardPage() {
               }}
             >
               Acompanhe sua evolução por semanas, veja a próxima aula
-              recomendada e use o painel para testar seu progresso antes da
-              publicação.
+              recomendada e personalize sua trilha para gerar um certificado com
+              seu nome.
             </p>
           </div>
 
@@ -416,6 +452,56 @@ export default function DashboardPage() {
           </section>
 
           <aside style={{ display: "grid", gap: "20px" }}>
+            <section style={neon.cardGreen}>
+              <p style={neon.eyebrow}>Identificação do aluno</p>
+
+              <h2 style={{ fontSize: "30px", margin: "10px 0" }}>
+                Personalize sua trilha
+              </h2>
+
+              <p style={neon.muted}>
+                Digite o nome que deve aparecer no dashboard e no certificado
+                final.
+              </p>
+
+              <input
+                value={studentNameInput}
+                onChange={(event) => setStudentNameInput(event.target.value)}
+                placeholder="Exemplo: Matheus Batista"
+                style={{
+                  width: "100%",
+                  padding: "15px",
+                  borderRadius: "16px",
+                  border: "1px solid rgba(255,255,255,0.14)",
+                  background: "rgba(2,6,23,0.55)",
+                  color: neon.colors.text,
+                  fontSize: "16px",
+                  outline: "none",
+                  marginTop: "8px",
+                }}
+              />
+
+              <button
+                onClick={handleSaveStudentName}
+                style={{
+                  ...neon.buttonPrimary,
+                  width: "100%",
+                  marginTop: "12px",
+                }}
+              >
+                Salvar nome
+              </button>
+
+              {profile.name && (
+                <p style={{ ...neon.muted, marginBottom: 0 }}>
+                  Nome salvo:{" "}
+                  <strong style={{ color: neon.colors.green }}>
+                    {profile.name}
+                  </strong>
+                </p>
+              )}
+            </section>
+
             <section style={neon.cardGreen}>
               <p style={neon.eyebrow}>Próxima aula recomendada</p>
 
