@@ -16,6 +16,33 @@ const initialProgress: ProgressData = {
   alexUsedLessons: [],
 };
 
+const weeks = [
+  {
+    title: "Semana 1",
+    subtitle: "Base lógica",
+    start: 1,
+    end: 7,
+  },
+  {
+    title: "Semana 2",
+    subtitle: "Python básico",
+    start: 8,
+    end: 14,
+  },
+  {
+    title: "Semana 3",
+    subtitle: "Dados e SQL",
+    start: 15,
+    end: 21,
+  },
+  {
+    title: "Semana 4",
+    subtitle: "APIs, automação e portfólio",
+    start: 22,
+    end: 30,
+  },
+];
+
 export default function DashboardPage() {
   const [progress, setProgress] = useState<ProgressData>(initialProgress);
 
@@ -26,6 +53,19 @@ export default function DashboardPage() {
       setProgress(JSON.parse(savedProgress));
     }
   }, []);
+
+  function handleResetProgress() {
+    const confirmed = window.confirm(
+      "Tem certeza que deseja resetar seu progresso local? Isso apagará as aulas concluídas neste navegador."
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    window.localStorage.removeItem(progressKey);
+    setProgress(initialProgress);
+  }
 
   const completedLessons = progress.completedLessons.length;
   const totalLessons = lessons.length;
@@ -38,7 +78,6 @@ export default function DashboardPage() {
     lessons[lessons.length - 1];
 
   const xp = completedLessons * 120 + alexUses * 30;
-  const currentWeek = Math.min(Math.ceil(Math.max(completedLessons, 1) / 7), 4);
 
   return (
     <main style={neon.page}>
@@ -64,7 +103,7 @@ export default function DashboardPage() {
                 marginBottom: "16px",
               }}
             >
-              Missão em andamento,{" "}
+              Central da missão,{" "}
               <span style={{ color: neon.colors.cyan }}>Matheus</span>.
             </h1>
 
@@ -72,11 +111,12 @@ export default function DashboardPage() {
               style={{
                 ...neon.muted,
                 fontSize: "19px",
-                maxWidth: "760px",
+                maxWidth: "780px",
               }}
             >
-              Acompanhe sua evolução na trilha de suporte com tecnologia,
-              lógica, Python, dados, APIs e automação.
+              Acompanhe sua evolução por semanas, veja a próxima aula
+              recomendada e use o painel para testar seu progresso antes da
+              publicação.
             </p>
           </div>
 
@@ -127,16 +167,25 @@ export default function DashboardPage() {
                 value={`${completedLessons}/${totalLessons}`}
                 description="Aulas concluídas"
               />
-              <InfoCard label="XP" value={String(xp)} description="Pontos acumulados" />
+
               <InfoCard
-                label="Semana"
-                value={`${currentWeek}/4`}
-                description="Fase atual da trilha"
+                label="XP"
+                value={String(xp)}
+                description="Pontos acumulados"
               />
+
+              <InfoCard
+                label="Alex"
+                value={`${alexUses}`}
+                description="Ajudas solicitadas"
+              />
+
               <InfoCard
                 label="Status"
                 value={trailCompleted ? "Concluído" : "Ativo"}
-                description={trailCompleted ? "Certificado liberado" : "Missão em progresso"}
+                description={
+                  trailCompleted ? "Certificado liberado" : "Missão em progresso"
+                }
               />
             </div>
 
@@ -160,169 +209,261 @@ export default function DashboardPage() {
         <section
           style={{
             display: "grid",
-            gridTemplateColumns: "minmax(0, 1.35fr) minmax(300px, 0.75fr)",
+            gridTemplateColumns: "minmax(0, 1.25fr) minmax(300px, 0.8fr)",
             gap: "26px",
             alignItems: "start",
           }}
         >
-          <section style={neon.card}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                gap: "16px",
-                flexWrap: "wrap",
-                alignItems: "center",
-                marginBottom: "22px",
-              }}
-            >
-              <div>
-                <p style={neon.eyebrow}>Missões da trilha</p>
-                <h2 style={{ fontSize: "34px", margin: "8px 0 0" }}>
-                  Central de aulas
-                </h2>
-              </div>
-
-              <span
+          <section style={{ display: "grid", gap: "22px" }}>
+            <section style={neon.card}>
+              <div
                 style={{
-                  color: trailCompleted ? neon.colors.green : neon.colors.cyan,
-                  border: `1px solid ${
-                    trailCompleted
-                      ? "rgba(34,197,94,0.45)"
-                      : "rgba(34,211,238,0.35)"
-                  }`,
-                  borderRadius: "999px",
-                  padding: "10px 14px",
-                  fontWeight: 900,
-                  background: trailCompleted
-                    ? "rgba(34,197,94,0.12)"
-                    : "rgba(34,211,238,0.1)",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: "16px",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  marginBottom: "22px",
                 }}
               >
-                {trailCompleted ? "Trilha concluída" : "Continue avançando"}
-              </span>
-            </div>
+                <div>
+                  <p style={neon.eyebrow}>Progresso por semana</p>
+                  <h2 style={{ fontSize: "34px", margin: "8px 0 0" }}>
+                    Fases da trilha
+                  </h2>
+                </div>
 
-            <div style={{ display: "grid", gap: "12px" }}>
-              {lessons.map((lesson) => {
-                const isCompleted = progress.completedLessons.includes(lesson.slug);
-                const isCurrent = currentLesson.slug === lesson.slug;
+                <span
+                  style={{
+                    color: trailCompleted
+                      ? neon.colors.green
+                      : neon.colors.cyan,
+                    border: `1px solid ${
+                      trailCompleted
+                        ? "rgba(34,197,94,0.45)"
+                        : "rgba(34,211,238,0.35)"
+                    }`,
+                    borderRadius: "999px",
+                    padding: "10px 14px",
+                    fontWeight: 900,
+                    background: trailCompleted
+                      ? "rgba(34,197,94,0.12)"
+                      : "rgba(34,211,238,0.1)",
+                  }}
+                >
+                  {trailCompleted ? "Trilha concluída" : "Continue avançando"}
+                </span>
+              </div>
 
-                return (
-                  <a
-                    key={lesson.slug}
-                    href={`/aulas/${lesson.slug}`}
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "auto minmax(0, 1fr) auto",
-                      gap: "14px",
-                      alignItems: "center",
-                      textDecoration: "none",
-                      color: neon.colors.text,
-                      padding: "16px",
-                      borderRadius: "18px",
-                      border: isCompleted
-                        ? "1px solid rgba(34,197,94,0.38)"
-                        : isCurrent
-                        ? "1px solid rgba(34,211,238,0.65)"
-                        : "1px solid rgba(255,255,255,0.1)",
-                      background: isCompleted
-                        ? "linear-gradient(135deg, rgba(34,197,94,0.18), rgba(15,23,42,0.72))"
-                        : isCurrent
-                        ? "linear-gradient(135deg, rgba(34,211,238,0.14), rgba(15,23,42,0.72))"
-                        : "rgba(255,255,255,0.04)",
-                      boxShadow: isCurrent
-                        ? "0 0 24px rgba(34,211,238,0.14)"
-                        : "none",
-                    }}
-                  >
-                    <span
+              <div style={{ display: "grid", gap: "16px" }}>
+                {weeks.map((week) => {
+                  const weekLessons = lessons.filter(
+                    (lesson) =>
+                      lesson.dayNumber >= week.start &&
+                      lesson.dayNumber <= week.end
+                  );
+
+                  const completedInWeek = weekLessons.filter((lesson) =>
+                    progress.completedLessons.includes(lesson.slug)
+                  ).length;
+
+                  const weekPercent = Math.round(
+                    (completedInWeek / weekLessons.length) * 100
+                  );
+
+                  return (
+                    <section
+                      key={week.title}
                       style={{
-                        width: "34px",
-                        height: "34px",
-                        display: "grid",
-                        placeItems: "center",
-                        borderRadius: "12px",
-                        background: isCompleted
-                          ? neon.colors.greenSoft
-                          : isCurrent
-                          ? neon.colors.cyanSoft
-                          : "rgba(255,255,255,0.06)",
-                        color: isCompleted ? neon.colors.green : neon.colors.cyan,
-                        fontWeight: 900,
+                        padding: "18px",
+                        borderRadius: "20px",
+                        background:
+                          completedInWeek === weekLessons.length
+                            ? "rgba(34,197,94,0.12)"
+                            : "rgba(255,255,255,0.045)",
+                        border:
+                          completedInWeek === weekLessons.length
+                            ? "1px solid rgba(34,197,94,0.35)"
+                            : "1px solid rgba(255,255,255,0.1)",
                       }}
                     >
-                      {isCompleted ? "✓" : lesson.dayNumber}
-                    </span>
-
-                    <div>
-                      <p
+                      <div
                         style={{
-                          color: neon.colors.cyan,
-                          fontWeight: 900,
-                          margin: 0,
-                          fontSize: "13px",
-                          textTransform: "uppercase",
-                          letterSpacing: "0.08em",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          gap: "14px",
+                          alignItems: "center",
+                          flexWrap: "wrap",
                         }}
                       >
-                        Dia {lesson.dayNumber}
-                      </p>
+                        <div>
+                          <p style={neon.eyebrow}>{week.title}</p>
+                          <h3 style={{ margin: "6px 0 0", fontSize: "22px" }}>
+                            {week.subtitle}
+                          </h3>
+                        </div>
 
-                      <strong
+                        <strong
+                          style={{
+                            color:
+                              completedInWeek === weekLessons.length
+                                ? neon.colors.green
+                                : neon.colors.cyan,
+                          }}
+                        >
+                          {completedInWeek}/{weekLessons.length}
+                        </strong>
+                      </div>
+
+                      <div style={{ ...neon.progressTrack, marginTop: "14px" }}>
+                        <div
+                          style={{
+                            ...neon.progressFill,
+                            width: `${weekPercent}%`,
+                          }}
+                        />
+                      </div>
+
+                      <div
                         style={{
-                          display: "block",
-                          marginTop: "5px",
-                          fontSize: "17px",
+                          display: "grid",
+                          gap: "10px",
+                          marginTop: "16px",
                         }}
                       >
-                        {lesson.title}
-                      </strong>
-                    </div>
+                        {weekLessons.map((lesson) => {
+                          const isCompleted =
+                            progress.completedLessons.includes(lesson.slug);
+                          const isCurrent = currentLesson.slug === lesson.slug;
 
-                    <strong
-                      style={{
-                        color: isCompleted
-                          ? neon.colors.green
-                          : isCurrent
-                          ? neon.colors.cyan
-                          : neon.colors.muted,
-                        whiteSpace: "nowrap",
-                        fontSize: "14px",
-                      }}
-                    >
-                      {isCompleted ? "Concluído" : isCurrent ? "Próxima" : "Bloqueada"}
-                    </strong>
-                  </a>
-                );
-              })}
-            </div>
+                          return (
+                            <a
+                              key={lesson.slug}
+                              href={`/aulas/${lesson.slug}`}
+                              style={{
+                                display: "grid",
+                                gridTemplateColumns: "auto minmax(0, 1fr) auto",
+                                gap: "12px",
+                                alignItems: "center",
+                                textDecoration: "none",
+                                color: neon.colors.text,
+                                padding: "13px",
+                                borderRadius: "16px",
+                                border: isCompleted
+                                  ? "1px solid rgba(34,197,94,0.32)"
+                                  : isCurrent
+                                  ? "1px solid rgba(34,211,238,0.55)"
+                                  : "1px solid rgba(255,255,255,0.08)",
+                                background: isCompleted
+                                  ? "rgba(34,197,94,0.1)"
+                                  : isCurrent
+                                  ? "rgba(34,211,238,0.1)"
+                                  : "rgba(255,255,255,0.035)",
+                              }}
+                            >
+                              <span
+                                style={{
+                                  width: "30px",
+                                  height: "30px",
+                                  display: "grid",
+                                  placeItems: "center",
+                                  borderRadius: "10px",
+                                  background: isCompleted
+                                    ? neon.colors.greenSoft
+                                    : isCurrent
+                                    ? neon.colors.cyanSoft
+                                    : "rgba(255,255,255,0.06)",
+                                  color: isCompleted
+                                    ? neon.colors.green
+                                    : neon.colors.cyan,
+                                  fontWeight: 900,
+                                }}
+                              >
+                                {isCompleted ? "✓" : lesson.dayNumber}
+                              </span>
+
+                              <strong style={{ fontSize: "15px" }}>
+                                {lesson.title}
+                              </strong>
+
+                              <span
+                                style={{
+                                  color: isCompleted
+                                    ? neon.colors.green
+                                    : isCurrent
+                                    ? neon.colors.cyan
+                                    : neon.colors.muted,
+                                  fontWeight: 900,
+                                  fontSize: "13px",
+                                  whiteSpace: "nowrap",
+                                }}
+                              >
+                                {isCompleted
+                                  ? "Concluído"
+                                  : isCurrent
+                                  ? "Próxima"
+                                  : "Bloqueada"}
+                              </span>
+                            </a>
+                          );
+                        })}
+                      </div>
+                    </section>
+                  );
+                })}
+              </div>
+            </section>
           </section>
 
           <aside style={{ display: "grid", gap: "20px" }}>
             <section style={neon.cardGreen}>
-              <p style={neon.eyebrow}>Mentor IA</p>
+              <p style={neon.eyebrow}>Próxima aula recomendada</p>
 
-              <h2 style={{ fontSize: "32px", marginTop: "10px" }}>
-                Assistente Alex
+              <h2 style={{ fontSize: "32px", margin: "10px 0" }}>
+                Dia {currentLesson.dayNumber}
               </h2>
 
-              <p style={neon.muted}>
-                Use o Alex durante as aulas para destravar conceitos e revisar
-                com exemplos simples de atendimento.
+              <p style={{ ...neon.muted, marginBottom: "18px" }}>
+                {currentLesson.title}
               </p>
 
-              <a href={`/aulas/${currentLesson.slug}`} style={neon.buttonPrimary}>
-                Continuar aula
+              <a
+                href={`/aulas/${currentLesson.slug}`}
+                style={neon.buttonPrimary}
+              >
+                Continuar missão
               </a>
             </section>
 
             <section style={neon.card}>
-              <p style={neon.eyebrow}>Dica de missão</p>
+              <p style={neon.eyebrow}>Controle de testes</p>
+
+              <h2 style={{ fontSize: "28px", margin: "10px 0" }}>
+                Resetar progresso local
+              </h2>
+
+              <p style={neon.muted}>
+                Use este botão apenas para testar a experiência do app do zero.
+                Ele apaga o progresso salvo neste navegador.
+              </p>
+
+              <button
+                onClick={handleResetProgress}
+                style={{
+                  ...neon.buttonGhost,
+                  width: "100%",
+                }}
+              >
+                Resetar progresso
+              </button>
+            </section>
+
+            <section style={neon.card}>
+              <p style={neon.eyebrow}>Dica do Alex</p>
 
               <p style={{ ...neon.muted, marginBottom: 0 }}>
-                Faça uma aula por vez, responda o quiz e use o erro como revisão.
-                O objetivo é constância, não velocidade.
+                Agora o dashboard mostra sua evolução por fases. Use as semanas
+                para entender sua jornada: lógica, Python, dados e automação.
               </p>
             </section>
 
@@ -331,12 +472,11 @@ export default function DashboardPage() {
                 <p style={neon.eyebrow}>Recompensa desbloqueada</p>
 
                 <h2 style={{ fontSize: "28px", margin: "10px 0" }}>
-                  Certificado final disponível
+                  Certificado disponível 🏆
                 </h2>
 
                 <p style={neon.muted}>
-                  Sua trilha chegou ao fim. Agora você pode usar o texto do
-                  certificado no GitHub, LinkedIn e currículo.
+                  Você concluiu todas as aulas cadastradas na trilha.
                 </p>
 
                 <a href="/certificado" style={neon.buttonSuccess}>
