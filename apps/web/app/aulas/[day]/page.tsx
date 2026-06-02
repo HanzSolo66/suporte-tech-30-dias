@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import {
@@ -28,13 +28,11 @@ type PageProps = {
 
 export default function DynamicLessonPage({ params }: PageProps) {
   const lesson = getLessonBySlug(params.day);
-  const nextLesson = lesson ? getNextLesson(lesson.slug) : undefined;
-  const previousLesson = lesson ? getPreviousLesson(lesson.slug) : undefined;
 
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [difficulty, setDifficulty] = useState("");
-  const [alexResponse, setAlexResponse] = useState("");
-  const [isAlexLoading, setIsAlexLoading] = useState(false);
+  const [assistantResponse, setAssistantResponse] = useState("");
+  const [isAssistantLoading, setIsAssistantLoading] = useState(false);
   const [progress, setProgress] = useState<ProgressData>(initialProgress);
 
   useEffect(() => {
@@ -67,20 +65,30 @@ export default function DynamicLessonPage({ params }: PageProps) {
     );
   }
 
-  const selectedAnswer = lesson.quiz.options.find(
+  const currentLesson = lesson;
+  const nextLesson = getNextLesson(currentLesson.slug);
+  const previousLesson = getPreviousLesson(currentLesson.slug);
+
+  const selectedAnswer = currentLesson.quiz.options.find(
     (option) => option.id === selectedOption
   );
 
-  const isLessonCompleted = progress.completedLessons.includes(lesson.slug);
-  const isAlexUsed = progress.alexUsedLessons.includes(lesson.slug);
+  const isLessonCompleted = progress.completedLessons.includes(
+    currentLesson.slug
+  );
+
+  const isAssistantUsed = progress.alexUsedLessons.includes(
+    currentLesson.slug
+  );
 
   const isPreviousLessonCompleted =
-    lesson.dayNumber === 1 ||
+    currentLesson.dayNumber === 1 ||
     Boolean(
       previousLesson && progress.completedLessons.includes(previousLesson.slug)
     );
 
-  const lessonProgress = [isLessonCompleted, isAlexUsed].filter(Boolean).length;
+  const lessonProgress = [isLessonCompleted, isAssistantUsed].filter(Boolean)
+    .length;
 
   function saveProgress(newProgress: ProgressData) {
     setProgress(newProgress);
@@ -90,31 +98,38 @@ export default function DynamicLessonPage({ params }: PageProps) {
   function handleSelectOption(optionId: string) {
     setSelectedOption(optionId);
 
-    const option = lesson.quiz.options.find((item) => item.id === optionId);
+    const option = currentLesson.quiz.options.find(
+      (item) => item.id === optionId
+    );
 
-    if (option?.isCorrect && !progress.completedLessons.includes(lesson.slug)) {
+    if (
+      option?.isCorrect &&
+      !progress.completedLessons.includes(currentLesson.slug)
+    ) {
       saveProgress({
         ...progress,
-        completedLessons: [...progress.completedLessons, lesson.slug],
+        completedLessons: [...progress.completedLessons, currentLesson.slug],
       });
     }
   }
 
-  async function handleAskAlex() {
+  async function handleAskAssistant() {
     if (!difficulty.trim()) {
-      setAlexResponse(
+      setAssistantResponse(
         "Me conta primeiro qual foi sua dificuldade. Pode escrever do seu jeito, sem se preocupar com termos técnicos."
       );
       return;
     }
 
-    setIsAlexLoading(true);
-    setAlexResponse("Alex está pensando na melhor explicação para você...");
+    setIsAssistantLoading(true);
+    setAssistantResponse(
+      "PetroKoblaco está pensando na melhor explicação para você..."
+    );
 
-    if (!progress.alexUsedLessons.includes(lesson.slug)) {
+    if (!progress.alexUsedLessons.includes(currentLesson.slug)) {
       saveProgress({
         ...progress,
-        alexUsedLessons: [...progress.alexUsedLessons, lesson.slug],
+        alexUsedLessons: [...progress.alexUsedLessons, currentLesson.slug],
       });
     }
 
@@ -125,37 +140,37 @@ export default function DynamicLessonPage({ params }: PageProps) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          lessonTitle: lesson.title,
-          lessonSummary: lesson.summary,
+          lessonTitle: currentLesson.title,
+          lessonSummary: currentLesson.summary,
           studentQuestion: difficulty,
         }),
       });
 
       const data = await response.json();
 
-      setAlexResponse(
+      setAssistantResponse(
         data.answer ||
           "Não consegui gerar uma resposta agora. Tente escrever sua dúvida de outro jeito."
       );
     } catch (error) {
-      console.error("Erro ao chamar Alex IA:", error);
+      console.error("Erro ao chamar PetroKoblaco IA:", error);
 
       const lowerDifficulty = difficulty.toLowerCase();
 
-      const hint = lesson.alexHints.find((item) =>
+      const hint = currentLesson.alexHints.find((item) =>
         item.keywords.some((keyword) => lowerDifficulty.includes(keyword))
       );
 
       if (hint) {
-        setAlexResponse(hint.response);
+        setAssistantResponse(hint.response);
         return;
       }
 
-      setAlexResponse(
+      setAssistantResponse(
         "Tive um problema para chamar a IA agora. Como alternativa, revise o resumo da aula e tente explicar sua dúvida em uma frase simples."
       );
     } finally {
-      setIsAlexLoading(false);
+      setIsAssistantLoading(false);
     }
   }
 
@@ -251,7 +266,9 @@ export default function DynamicLessonPage({ params }: PageProps) {
           />
 
           <div style={{ position: "relative" }}>
-            <p style={neon.eyebrow}>Dia {lesson.dayNumber} · Missão ativa</p>
+            <p style={neon.eyebrow}>
+              Dia {currentLesson.dayNumber} · Missão ativa
+            </p>
 
             <h1
               style={{
@@ -261,11 +278,11 @@ export default function DynamicLessonPage({ params }: PageProps) {
                 marginBottom: "18px",
               }}
             >
-              {lesson.title}
+              {currentLesson.title}
             </h1>
 
             <p style={{ ...neon.muted, fontSize: "20px", maxWidth: "820px" }}>
-              {lesson.description}
+              {currentLesson.description}
             </p>
 
             <div
@@ -283,9 +300,9 @@ export default function DynamicLessonPage({ params }: PageProps) {
               />
 
               <MissionStat
-                label="Alex IA"
-                value={isAlexUsed ? "Usado" : "Opcional"}
-                success={isAlexUsed}
+                label="PetroKoblaco IA"
+                value={isAssistantUsed ? "Usado" : "Opcional"}
+                success={isAssistantUsed}
               />
 
               <MissionStat
@@ -323,7 +340,7 @@ export default function DynamicLessonPage({ params }: PageProps) {
                 O que você vai dominar
               </h2>
               <p style={{ ...neon.muted, marginBottom: 0 }}>
-                {lesson.objective}
+                {currentLesson.objective}
               </p>
             </section>
 
@@ -333,7 +350,7 @@ export default function DynamicLessonPage({ params }: PageProps) {
                 Contexto da missão
               </h2>
               <p style={{ ...neon.muted, marginBottom: 0 }}>
-                {lesson.summary}
+                {currentLesson.summary}
               </p>
             </section>
 
@@ -344,7 +361,7 @@ export default function DynamicLessonPage({ params }: PageProps) {
               </h2>
 
               <div style={{ display: "grid", gap: "12px" }}>
-                {lesson.concepts.map((concept) => (
+                {currentLesson.concepts.map((concept) => (
                   <Concept
                     key={concept.title}
                     title={concept.title}
@@ -358,11 +375,11 @@ export default function DynamicLessonPage({ params }: PageProps) {
               <p style={neon.eyebrow}>Quiz rápido</p>
 
               <h2 style={{ fontSize: "30px", margin: "10px 0 18px" }}>
-                {lesson.quiz.title}
+                {currentLesson.quiz.title}
               </h2>
 
               <div style={{ display: "grid", gap: "12px" }}>
-                {lesson.quiz.options.map((option) => {
+                {currentLesson.quiz.options.map((option) => {
                   const isSelected = selectedOption === option.id;
 
                   return (
@@ -427,7 +444,7 @@ export default function DynamicLessonPage({ params }: PageProps) {
                 Conclusão da missão
               </h2>
 
-              <p style={neon.muted}>{lesson.closing}</p>
+              <p style={neon.muted}>{currentLesson.closing}</p>
 
               {isLessonCompleted && (
                 <div
@@ -439,7 +456,7 @@ export default function DynamicLessonPage({ params }: PageProps) {
                     border: "1px solid rgba(34,197,94,0.35)",
                   }}
                 >
-                  <strong>Dia {lesson.dayNumber} concluído 🎉</strong>
+                  <strong>Dia {currentLesson.dayNumber} concluído 🎉</strong>
 
                   <p style={{ ...neon.muted, marginBottom: "16px" }}>
                     Seu progresso foi salvo. Você já pode continuar sua jornada.
@@ -462,15 +479,15 @@ export default function DynamicLessonPage({ params }: PageProps) {
 
           <aside style={{ display: "grid", gap: "20px" }}>
             <section style={neon.cardGreen}>
-              <p style={neon.eyebrow}>Assistente Alex IA</p>
+              <p style={neon.eyebrow}>Assistente PetroKoblaco IA</p>
 
               <h2 style={{ fontSize: "30px", margin: "10px 0" }}>
                 Travou em algo?
               </h2>
 
               <p style={neon.muted}>
-                Escreva sua dúvida. O Alex vai chamar a IA para responder com
-                uma explicação simples baseada nesta aula.
+                Escreva sua dúvida. O PetroKoblaco vai chamar a IA para
+                responder com uma explicação simples baseada nesta aula.
               </p>
 
               <textarea
@@ -494,19 +511,21 @@ export default function DynamicLessonPage({ params }: PageProps) {
               />
 
               <button
-                onClick={handleAskAlex}
-                disabled={isAlexLoading}
+                onClick={handleAskAssistant}
+                disabled={isAssistantLoading}
                 style={{
                   ...neon.buttonPrimary,
                   marginTop: "14px",
                   width: "100%",
-                  opacity: isAlexLoading ? 0.7 : 1,
+                  opacity: isAssistantLoading ? 0.7 : 1,
                 }}
               >
-                {isAlexLoading ? "Alex pensando..." : "Pedir ajuda ao Alex"}
+                {isAssistantLoading
+                  ? "PetroKoblaco pensando..."
+                  : "Pedir ajuda ao PetroKoblaco"}
               </button>
 
-              {alexResponse && (
+              {assistantResponse && (
                 <div
                   style={{
                     marginTop: "18px",
@@ -516,9 +535,9 @@ export default function DynamicLessonPage({ params }: PageProps) {
                     border: "1px solid rgba(34,211,238,0.25)",
                   }}
                 >
-                  <strong>Resposta do Alex</strong>
+                  <strong>Resposta do PetroKoblaco</strong>
                   <p style={{ ...neon.muted, marginBottom: 0 }}>
-                    {alexResponse}
+                    {assistantResponse}
                   </p>
                 </div>
               )}
