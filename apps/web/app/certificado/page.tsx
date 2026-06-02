@@ -90,6 +90,7 @@ export default function CertificadoPage() {
     <main style={neon.page}>
       <section style={{ ...neon.container, maxWidth: "1080px" }}>
         <header
+          className="no-print"
           style={{
             display: "flex",
             justifyContent: "space-between",
@@ -109,6 +110,7 @@ export default function CertificadoPage() {
         </header>
 
         <section
+          className="certificate-print-area"
           style={{
             ...(trailCompleted ? neon.cardGreen : neon.card),
             padding: "46px",
@@ -157,9 +159,7 @@ export default function CertificadoPage() {
               ) : (
                 <>
                   Certificado de{" "}
-                  <span style={{ color: neon.colors.cyan }}>
-                    {studentName}
-                  </span>{" "}
+                  <span style={{ color: neon.colors.cyan }}>{studentName}</span>{" "}
                   ainda em andamento.
                 </>
               )}
@@ -192,6 +192,146 @@ export default function CertificadoPage() {
                 {progressPercent}% da trilha.
               </p>
             </div>
+
+            <section
+              style={{
+                marginTop: "34px",
+                padding: "26px",
+                borderRadius: "26px",
+                background: "rgba(2,6,23,0.42)",
+                border: "1px solid rgba(255,255,255,0.12)",
+              }}
+            >
+              <p style={neon.eyebrow}>Declaração</p>
+
+              <p
+                style={{
+                  ...neon.muted,
+                  fontSize: "18px",
+                  marginBottom: 0,
+                }}
+              >
+                Declaramos que <strong>{studentName}</strong> concluiu a trilha
+                prática <strong>Suporte Tech 30 Dias</strong>, demonstrando
+                conhecimentos iniciais em suporte com tecnologia, lógica de
+                programação, Python básico, dados, SQL, APIs, automação e
+                construção de projeto para portfólio.
+              </p>
+            </section>
+
+            <section
+              style={{
+                marginTop: "38px",
+                display: "grid",
+                gridTemplateColumns: "1fr",
+                justifyItems: "center",
+                textAlign: "center",
+                gap: "18px",
+              }}
+            >
+              <div
+                style={{
+                  display: "grid",
+                  justifyItems: "center",
+                  textAlign: "center",
+                  width: "100%",
+                }}
+              >
+                <div
+                  style={{
+                    width: "560px",
+                    maxWidth: "100%",
+                    height: "150px",
+                    display: "grid",
+                    placeItems: "center",
+                    overflow: "hidden",
+                    marginBottom: "2px",
+                  }}
+                >
+                  <svg
+                    viewBox="0 0 900 240"
+                    role="img"
+                    aria-label="Assinatura de Matheus Batista"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      display: "block",
+                    }}
+                  >
+                    <text
+                      x="450"
+                      y="122"
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                      style={{
+                        fontFamily:
+                          "'Brush Script MT', 'Segoe Script', 'Lucida Handwriting', cursive",
+                        fontSize: "104px",
+                        fontStyle: "italic",
+                        fontWeight: 400,
+                        fill: "#f8fafc",
+                        letterSpacing: "-3px",
+                      }}
+                    >
+                      Matheus Batista
+                    </text>
+
+                    <path
+                      d="M210 157 C 335 185, 585 185, 705 156"
+                      fill="none"
+                      stroke="#f8fafc"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      opacity="0.42"
+                    />
+                  </svg>
+                </div>
+
+                <div
+                  style={{
+                    width: "330px",
+                    maxWidth: "100%",
+                    height: "1px",
+                    background: "rgba(248,250,252,0.62)",
+                    marginBottom: "10px",
+                  }}
+                />
+
+                <strong>Matheus Batista</strong>
+
+                <p
+                  style={{
+                    ...neon.muted,
+                    marginTop: "6px",
+                    marginBottom: 0,
+                  }}
+                >
+                  Criador da trilha Suporte Tech 30 Dias
+                </p>
+              </div>
+
+              <div
+                style={{
+                  width: "96px",
+                  height: "96px",
+                  borderRadius: "999px",
+                  border: "1px solid rgba(34,211,238,0.55)",
+                  display: "grid",
+                  placeItems: "center",
+                  color: neon.colors.cyan,
+                  fontWeight: 900,
+                  textAlign: "center",
+                  fontSize: "12px",
+                  letterSpacing: "0.08em",
+                  background: "rgba(34,211,238,0.08)",
+                  boxShadow: "0 0 24px rgba(34,211,238,0.16)",
+                }}
+              >
+                ST30
+                <br />
+                VALIDADO
+              </div>
+            </section>
           </div>
         </section>
 
@@ -234,6 +374,7 @@ export default function CertificadoPage() {
         </section>
 
         <section
+          className="no-print"
           style={{
             display: "grid",
             gridTemplateColumns: "minmax(0, 1fr) minmax(300px, 0.75fr)",
@@ -361,11 +502,37 @@ export default function CertificadoPage() {
               <p style={{ ...neon.muted, marginBottom: 0 }}>
                 Você criou uma aplicação completa com home, dashboard, aulas
                 dinâmicas, quizzes, progresso local, nome personalizado, mentor
-                Alex e certificado final.
+                Alex, assinatura e certificado final.
               </p>
             </section>
           </aside>
         </section>
+
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              @media print {
+                body {
+                  background: #020617 !important;
+                }
+
+                .no-print {
+                  display: none !important;
+                }
+
+                main {
+                  padding: 18px !important;
+                  min-height: auto !important;
+                }
+
+                .certificate-print-area {
+                  box-shadow: none !important;
+                  page-break-inside: avoid;
+                }
+              }
+            `,
+          }}
+        />
       </section>
     </main>
   );
