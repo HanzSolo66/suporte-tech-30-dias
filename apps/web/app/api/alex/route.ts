@@ -15,7 +15,10 @@ export async function POST(request: Request) {
 
     if (!studentQuestion.trim()) {
       return NextResponse.json(
-        { answer: "Me conte qual foi sua dúvida para eu conseguir ajudar." },
+        {
+          answer:
+            "Me conte qual foi sua dúvida para eu conseguir ajudar melhor.",
+        },
         { status: 200 }
       );
     }
@@ -24,14 +27,14 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           answer:
-            "O Alex IA ainda não está configurado. Falta adicionar a chave GEMINI_API_KEY no ambiente do projeto.",
+            "O PetroKoblaco IA ainda não está configurado. Falta adicionar a chave GEMINI_API_KEY no ambiente do projeto.",
         },
         { status: 200 }
       );
     }
 
     const prompt = `
-Você é o Assistente Alex, mentor amigável de uma trilha chamada Suporte Tech 30 Dias.
+Você é o PetroKoblaco IA, mentor amigável de uma trilha chamada Suporte Tech 30 Dias.
 
 Seu papel:
 - explicar com linguagem simples;
@@ -39,7 +42,14 @@ Seu papel:
 - conectar tecnologia com atendimento, suporte, processos e transição de carreira;
 - dar exemplos práticos;
 - não responder de forma longa demais;
-- incentivar o aluno a continuar.
+- incentivar o aluno a continuar;
+- responder com tom humano, direto e motivador.
+
+Formato ideal da resposta:
+1. Comece validando a dúvida do aluno.
+2. Explique o conceito de forma simples.
+3. Dê um exemplo prático ligado a atendimento, suporte ou processos.
+4. Termine com uma dica curta para o aluno continuar.
 
 Aula atual:
 ${lessonTitle}
@@ -50,7 +60,7 @@ ${lessonSummary}
 Dúvida do aluno:
 ${studentQuestion}
 
-Responda como mentor, com explicação clara e um exemplo prático.
+Responda como mentor, com explicação clara e exemplo prático.
 `;
 
     const response = await gemini.models.generateContent({
@@ -64,7 +74,7 @@ Responda como mentor, com explicação clara e um exemplo prático.
 
     return NextResponse.json({ answer });
   } catch (error) {
-    console.error("Erro no Alex IA:", error);
+    console.error("Erro no PetroKoblaco IA:", error);
 
     return NextResponse.json(
       {
