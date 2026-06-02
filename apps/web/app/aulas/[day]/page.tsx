@@ -34,6 +34,7 @@ export default function DynamicLessonPage({ params }: PageProps) {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [difficulty, setDifficulty] = useState("");
   const [alexResponse, setAlexResponse] = useState("");
+  const [isAlexLoading, setIsAlexLoading] = useState(false);
   const [progress, setProgress] = useState<ProgressData>(initialProgress);
 
   useEffect(() => {
@@ -99,7 +100,7 @@ export default function DynamicLessonPage({ params }: PageProps) {
     }
   }
 
-  function handleAskAlex() {
+  async function handleAskAlex() {
     if (!difficulty.trim()) {
       setAlexResponse(
         "Me conta primeiro qual foi sua dificuldade. Pode escrever do seu jeito, sem se preocupar com termos técnicos."
@@ -107,7 +108,8 @@ export default function DynamicLessonPage({ params }: PageProps) {
       return;
     }
 
-    const lowerDifficulty = difficulty.toLowerCase();
+    setIsAlexLoading(true);
+    setAlexResponse("Alex está pensando na melhor explicação para você...");
 
     if (!progress.alexUsedLessons.includes(lesson.slug)) {
       saveProgress({
@@ -116,18 +118,45 @@ export default function DynamicLessonPage({ params }: PageProps) {
       });
     }
 
-    const hint = lesson.alexHints.find((item) =>
-      item.keywords.some((keyword) => lowerDifficulty.includes(keyword))
-    );
+    try {
+      const response = await fetch("/api/alex", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          lessonTitle: lesson.title,
+          lessonSummary: lesson.summary,
+          studentQuestion: difficulty,
+        }),
+      });
 
-    if (hint) {
-      setAlexResponse(hint.response);
-      return;
+      const data = await response.json();
+
+      setAlexResponse(
+        data.answer ||
+          "Não consegui gerar uma resposta agora. Tente escrever sua dúvida de outro jeito."
+      );
+    } catch (error) {
+      console.error("Erro ao chamar Alex IA:", error);
+
+      const lowerDifficulty = difficulty.toLowerCase();
+
+      const hint = lesson.alexHints.find((item) =>
+        item.keywords.some((keyword) => lowerDifficulty.includes(keyword))
+      );
+
+      if (hint) {
+        setAlexResponse(hint.response);
+        return;
+      }
+
+      setAlexResponse(
+        "Tive um problema para chamar a IA agora. Como alternativa, revise o resumo da aula e tente explicar sua dúvida em uma frase simples."
+      );
+    } finally {
+      setIsAlexLoading(false);
     }
-
-    setAlexResponse(
-      "Obrigado por compartilhar. Minha sugestão é revisar o resumo da aula e tentar explicar com suas palavras o que você entendeu. Se travar, divida a dúvida em uma frase simples: 'não entendi o que é...' ou 'não sei quando usar...'."
-    );
   }
 
   if (!isPreviousLessonCompleted) {
@@ -254,7 +283,7 @@ export default function DynamicLessonPage({ params }: PageProps) {
               />
 
               <MissionStat
-                label="Alex"
+                label="Alex IA"
                 value={isAlexUsed ? "Usado" : "Opcional"}
                 success={isAlexUsed}
               />
@@ -420,9 +449,7 @@ export default function DynamicLessonPage({ params }: PageProps) {
                     href={
                       nextLesson ? `/aulas/${nextLesson.slug}` : "/certificado"
                     }
-                    style={
-                      nextLesson ? neon.buttonPrimary : neon.buttonSuccess
-                    }
+                    style={nextLesson ? neon.buttonPrimary : neon.buttonSuccess}
                   >
                     {nextLesson
                       ? `Ir para o Dia ${nextLesson.dayNumber}`
@@ -435,15 +462,15 @@ export default function DynamicLessonPage({ params }: PageProps) {
 
           <aside style={{ display: "grid", gap: "20px" }}>
             <section style={neon.cardGreen}>
-              <p style={neon.eyebrow}>Assistente Alex</p>
+              <p style={neon.eyebrow}>Assistente Alex IA</p>
 
               <h2 style={{ fontSize: "30px", margin: "10px 0" }}>
                 Travou em algo?
               </h2>
 
               <p style={neon.muted}>
-                Escreva sua dúvida. O Alex vai responder com uma explicação
-                simples baseada nesta aula.
+                Escreva sua dúvida. O Alex vai chamar a IA para responder com
+                uma explicação simples baseada nesta aula.
               </p>
 
               <textarea
@@ -468,13 +495,15 @@ export default function DynamicLessonPage({ params }: PageProps) {
 
               <button
                 onClick={handleAskAlex}
+                disabled={isAlexLoading}
                 style={{
                   ...neon.buttonPrimary,
                   marginTop: "14px",
                   width: "100%",
+                  opacity: isAlexLoading ? 0.7 : 1,
                 }}
               >
-                Pedir ajuda ao Alex
+                {isAlexLoading ? "Alex pensando..." : "Pedir ajuda ao Alex"}
               </button>
 
               {alexResponse && (
