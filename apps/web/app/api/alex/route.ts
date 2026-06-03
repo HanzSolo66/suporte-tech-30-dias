@@ -64,7 +64,7 @@ Responda como mentor, com explicação clara e exemplo prático.
 `;
 
     const response = await gemini.models.generateContent({
-      model: "gemini-1.5-flash",
+      model: "gemini-2.0-flash",
       contents: prompt,
     });
 
