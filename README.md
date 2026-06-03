@@ -34,7 +34,17 @@ Este projeto foi pensado para pessoas que:
 - gostam de resolver problemas e melhorar processos;
 - desejam criar um primeiro projeto para portfólio.
 
----
+## Variáveis de ambiente
+
+Para usar o assistente PetroKoblaco IA com Gemini, crie um arquivo `.env.local` dentro de `apps/web`:
+
+```env
+GEMINI_API_KEY=sua_chave_do_google_ai_studio
+```
+
+A chave não deve ser enviada para o GitHub. Em produção, configure a mesma variável de ambiente na Vercel.
+
+Sem essa variável, o app continua abrindo normalmente, mas o assistente IA não conseguirá responder.---
 
 ## Funcionalidades
 
