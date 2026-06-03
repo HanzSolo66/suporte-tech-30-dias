@@ -337,13 +337,27 @@ export default function DynamicLessonPage({ params }: PageProps) {
             }}
           >
             <div>
-              <p style={neon.eyebrow}>Vídeo de apoio</p>
+              <p style={neon.eyebrow}>Vídeo/playlist de apoio</p>
               <h2 style={{ fontSize: "30px", margin: "10px 0" }}>
                 {videoLink.title}
               </h2>
+
               <p style={{ ...neon.muted, marginBottom: 0 }}>
-                Abra uma busca dentro do canal Curso em Vídeo para reforçar o
-                tema desta aula.
+                Material complementar selecionado para reforçar o tema desta
+                aula. Pode ser um vídeo direto, playlist ou busca guiada dentro
+                do canal indicado.
+              </p>
+
+              <p
+                style={{
+                  ...neon.muted,
+                  marginTop: "10px",
+                  marginBottom: 0,
+                  fontSize: "14px",
+                }}
+              >
+                Fonte: <strong>{videoLink.source}</strong> · Tipo:{" "}
+                <strong>{videoLink.type}</strong>
               </p>
             </div>
 
