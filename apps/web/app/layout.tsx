@@ -1,4 +1,10 @@
-export default function RootLayout({
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Suporte Tech 30 Dias",
+  description:
+    "Web app educacional gamificado para transição de carreira em tecnologia.",
+};export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
