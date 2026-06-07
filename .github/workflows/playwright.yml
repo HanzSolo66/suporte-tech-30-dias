@@ -1,0 +1,70 @@
+name: QA com Playwright
+
+on:
+  pull_request:
+    branches:
+      - main
+
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  testes-e2e:
+    name: Testes desktop e mobile
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: apps/web
+
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@v4
+
+      - name: Preparar pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: apps/web/pnpm-lock.yaml
+
+      - name: Instalar dependências
+        run: pnpm install --frozen-lockfile
+
+      - name: Instalar Chromium do Playwright
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Verificar TypeScript
+        run: pnpm exec tsc --noEmit
+
+      - name: Executar build
+        run: pnpm build
+
+      - name: Executar testes Playwright
+        run: pnpm exec playwright test
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: Salvar relatório do Playwright
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-playwright
+          path: apps/web/playwright-report/
+          retention-days: 7
+
+      - name: Salvar evidências de falhas
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidencias-playwright
+          path: apps/web/test-results/
+          retention-days: 7
