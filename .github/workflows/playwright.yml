@@ -16,10 +16,6 @@ jobs:
     name: Testes desktop e mobile
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: apps/web
-
     steps:
       - name: Baixar o código
         uses: actions/checkout@v4
@@ -32,21 +28,25 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
-          cache-dependency-path: apps/web/pnpm-lock.yaml
+          cache-dependency-path: pnpm-lock.yaml
 
-      - name: Instalar dependências
+      - name: Instalar dependências do workspace
         run: pnpm install --frozen-lockfile
 
       - name: Instalar Chromium do Playwright
+        working-directory: apps/web
         run: pnpm exec playwright install --with-deps chromium
 
       - name: Verificar TypeScript
+        working-directory: apps/web
         run: pnpm exec tsc --noEmit
 
       - name: Executar build
+        working-directory: apps/web
         run: pnpm build
 
       - name: Executar testes Playwright
+        working-directory: apps/web
         run: pnpm exec playwright test
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -58,6 +58,7 @@ jobs:
           name: relatorio-playwright
           path: apps/web/playwright-report/
           retention-days: 7
+          if-no-files-found: ignore
 
       - name: Salvar evidências de falhas
         if: failure()
@@ -66,3 +67,4 @@ jobs:
           name: evidencias-playwright
           path: apps/web/test-results/
           retention-days: 7
+          if-no-files-found: ignore
